@@ -60,7 +60,7 @@ export default {
           return this.$message.error('登录失败')
         } else {
           this.$message.success('登录成功')
-          window.sessionStorage.setItem('token', res.token)
+          window.sessionStorage.setItem('token', res.data.token)
           this.$router.push('/home')
         }
       })
