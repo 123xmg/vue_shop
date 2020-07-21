@@ -28,9 +28,9 @@
           <el-tag v-if="scope.row.cat_level === 2" size="mini" type="warning">三级</el-tag>
         </template>
         <!-- 操作 -->
-        <template slot="opera" slot-scope="">
-          <el-button type="primary" icon="el-icon-edit" size="mini"> </el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+        <template slot="opera" slot-scope="scope">
+          <el-button type="primary" icon="el-icon-edit" size="mini" @click="editBox(scope.row.cat_id)"> </el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteBox(scope.row.cat_id)"></el-button>
         </template>
       </tree-table>
       <!-- 分页 -->
@@ -61,6 +61,18 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="addCataDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="addCata">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 编辑分类 -->
+    <el-dialog title="修改商品属性" :visible.sync="editDialogVisible" width="50%" @close="editDialogClose">
+      <el-form :model="editGoodsCat" ref="editRef" :rules="editFromrules" label-width="100px">
+        <el-form-item label="分类名称" prop="cat_name">
+          <el-input v-model="editGoodsCat.cat_name"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editParams">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -124,7 +136,17 @@ export default {
         children: 'children'
       },
       // 选中的级联的id
-      selectKeys: []
+      selectKeys: [],
+      // 修改商品属性
+      editGoodsCat: {
+        cat_name: ''
+      },
+      editDialogVisible: false,
+      editFromrules: {
+        cat_name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }]
+      },
+      // 编辑的分类的id
+      editId: 0
     }
   },
   created() {
@@ -192,6 +214,56 @@ export default {
         this.addCataDialogVisible = false
         this.$message.success('添加数据成功！')
       }
+    },
+    // 删除分类
+    async deleteBox(catId) {
+      const confirmresult = await this.$confirm('此操作将永久删除该商品分类, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(error => error)
+      if (confirmresult !== 'confirm') {
+        this.$message('已取消删除')
+      } else {
+        const { data: res } = await this.$http.delete('categories/' + catId)
+        console.log(res)
+        if (res.meta.status !== 200) {
+          return this.$message.error('删除失败')
+        } else {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.getCateList()
+        }
+      }
+    },
+    // 修改商品分类按钮
+    async editBox(id) {
+      this.editId = id
+      const { data: res } = await this.$http.get('categories/' + id)
+      if (res.meta.status !== 200) {
+        return this.$message.error('数据获取失败!')
+      }
+      this.editGoodsCat = res.data
+      this.editDialogVisible = true
+    },
+    // 编辑对话框关闭
+    editDialogClose() {
+      this.$refs.editRef.resetFields()
+    },
+    // 确认修改商品
+    editParams() {
+      this.$refs.editRef.validate(async valid => {
+        if (!valid) return
+        const { data: res } = await this.$http.put('categories/' + this.editId, { cat_name: this.editGoodsCat.cat_name })
+        if (res.meta.status !== 200) {
+          return this.$message.error('商品分类修改失败！')
+        }
+        this.editDialogVisible = false
+        this.getCateList()
+        this.$message.success('商品分类修改成功！')
+      })
     }
   }
 }
