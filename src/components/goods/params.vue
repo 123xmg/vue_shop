@@ -197,7 +197,7 @@ export default {
         return this.$message.error('信息获取失败！')
       } else {
         res.data.forEach(item => {
-          item.attr_vals = item.attr_vals ? item.attr_vals.split(' ') : []
+          item.attr_vals = item.attr_vals ? item.attr_vals.split(',') : []
           // 控制文本框的显示与隐藏
           item.inputVisible = false
           // 文本框输入的值
@@ -313,7 +313,7 @@ export default {
       const { data: res } = await this.$http.put(`categories/${this.cataId}/attributes/${row.attr_id}`, {
         attr_name: row.attr_name,
         attr_sel: row.attr_sel,
-        attr_vals: row.attr_vals.join(' ')
+        attr_vals: row.attr_vals.join(',')
       })
       if (res.meta.status !== 200) {
         return this.$message.error('修改参数失败！')
