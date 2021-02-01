@@ -3,8 +3,8 @@
     <!-- 头部 -->
     <el-header>
       <div>
-        <img src="../assets/heima.png" alt="heima" title="黑马" />
-        <span>电商后台管理系统</span>
+        <img src="../assets/heima.png" alt="heima" title="小鲸鱼" />
+        <span>小鲸鱼健身房管理系统</span>
       </div>
       <el-button type="info" @click="logout">退出</el-button>
     </el-header>
@@ -98,6 +98,8 @@ export default {
     align-items: center;
     > img {
       cursor: pointer;
+      margin-left: 10px;
+      margin-right: 10px;
     }
   }
 }
