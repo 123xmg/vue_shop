@@ -83,7 +83,7 @@ export default {
 <style lang="less" scoped>
 .zz_slide {
   display: inline-block;
-  height: 25px;
+  height: 20px;
   width: 5px;
   margin-right: 5px;
   vertical-align: text-bottom;
@@ -92,7 +92,7 @@ export default {
 }
 .zz_title {
   display: inline-block;
-  font-size: 24px;
+  font-size: 18px;
 }
 .user_table {
   margin-top: 20px;

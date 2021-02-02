@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="main" style="width: 1000px;height:400px;"></div>
+    <div id="main" class="tubiao"></div>
   </div>
 </template>
 <script>
@@ -91,4 +91,15 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.tubiao {
+  width: 1000px;
+  height: 400px;
+}
+@media screen and (max-width: 1300px) {
+  .tubiao {
+    width: 650px;
+    height: 400px;
+  }
+}
+</style>
