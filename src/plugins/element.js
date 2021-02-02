@@ -84,4 +84,4 @@ Vue.use(Option)
 Vue.use(Alert)
 Vue.prototype.$notify = Notification
 Vue.prototype.$message = Message
-Vue.prototype.$confirm = MessageBox
+Vue.prototype.$confirm = MessageBox.confirm

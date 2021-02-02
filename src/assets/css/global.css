@@ -32,3 +32,6 @@ body,
 .ql-editor {
   min-height: 300px;
 }
+p {
+  margin: 0;
+}

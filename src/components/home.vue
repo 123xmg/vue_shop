@@ -3,10 +3,17 @@
     <!-- 头部 -->
     <el-header>
       <div>
-        <img src="../assets/heima.png" alt="heima" title="小鲸鱼" />
+        <img src="../assets/logo.png" alt="xiaojingyu" title="小鲸鱼" />
         <span>小鲸鱼健身房管理系统</span>
       </div>
-      <el-button type="info" @click="logout">退出</el-button>
+      <div class="icon-message">
+        <i class="iconfont icon-xiaoxi"></i>
+        <div class="message-num">1</div>
+      </div>
+      <div class="off_login" @click="handleLogout">
+        <i class="el-icon-switch-button" style="margin-right: 5px;" ></i>
+        <span>退出登录</span>
+      </div>
     </el-header>
     <!-- 主体 -->
     <el-container>
@@ -41,9 +48,9 @@ export default {
       isCollaspse: false,
       menuList: {},
       iconObj: {
-        125: 'iconfont icon-user',
-        103: 'iconfont icon-tijikongjian',
-        101: 'iconfont icon-lock_fill',
+        125: 'iconfont icon-user1',
+        103: 'iconfont icon-tiji',
+        101: 'iconfont icon-lock',
         102: 'iconfont icon-danju',
         145: 'iconfont icon-baobiao'
       },
@@ -56,9 +63,22 @@ export default {
   },
   methods: {
     // 退出
-    logout() {
-      window.sessionStorage.clear()
-      this.$router.push('/login')
+    handleLogout() {
+      // window.sessionStorage.clear()
+      // this.$router.push('/login')
+      this.$confirm('真的要退出登录吗 ?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        window.sessionStorage.clear()
+        this.$router.push('/login')
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消退出'
+        })
+      })
     },
     // 获取菜单列表
     async getMenuList() {
@@ -67,6 +87,7 @@ export default {
         return this.$message.error(res.meta.msg)
       } else {
         this.menuList = res.data
+        console.log('查询得到的数据', res)
       }
     },
     // 是否折叠菜单栏
@@ -124,5 +145,34 @@ export default {
   letter-spacing: 0.2em;
   background-color: #4b5769;
   cursor: pointer;
+}
+.off_login {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  width: 100px;
+  height: 30px;
+  font-size: 15px;
+  cursor: pointer;
+  i {
+    vertical-align: middle;
+  }
+}
+.icon-message{
+  position: relative;
+  width: 25px;
+  margin-right: 110px;
+}
+.message-num{
+  position: absolute;
+  top: -8px;
+  right: 2px;
+  width: 15px;
+  height: 15px;
+  font-size: 15px;
+  line-height: 15px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: red;
 }
 </style>
