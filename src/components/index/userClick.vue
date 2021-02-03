@@ -38,7 +38,7 @@ export default {
               { text: '五月', max: 10000 }
             ],
             radius: 80,
-            center: ['50%', '40%'],
+            center: ['50%', '45%'],
             name: {
               formatter: '{value}',
               textStyle: {
@@ -117,11 +117,5 @@ export default {
 .tubiao {
   width: 300px;
   height: 300px;
-}
-@media screen and (max-width: 1300px) {
-  .tubiao {
-    width: 250px;
-    height: 300px;
-  }
 }
 </style>

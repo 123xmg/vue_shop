@@ -10,7 +10,6 @@ import echarts from 'echarts'
 export default {
   data() {
     return {
-      // 需要合并的对象
       options: {
         title: {
           text: '人员管理'
@@ -45,6 +44,7 @@ export default {
             name: '普通用户',
             type: 'line',
             stack: '总量',
+            areaStyle: {},
             data: [150, 232, 201, 154, 190, 330],
             smooth: true
           },
@@ -52,6 +52,7 @@ export default {
             name: 'VIP用户',
             type: 'line',
             stack: '总量',
+            areaStyle: {},
             data: [320, 332, 301, 334, 390, 330],
             smooth: true
           },
@@ -59,6 +60,7 @@ export default {
             name: '教练',
             type: 'line',
             stack: '总量',
+            areaStyle: {},
             data: [12, 16, 20, 40, 54, 60],
             smooth: true
           },
@@ -66,6 +68,7 @@ export default {
             name: '管理员',
             type: 'line',
             stack: '总量',
+            areaStyle: {},
             data: [5, 6, 8, 10, 20, 25],
             smooth: true
           }

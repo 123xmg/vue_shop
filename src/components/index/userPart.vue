@@ -5,7 +5,7 @@
       <div class="zz_title">成员分布</div>
     </div>
     <div class="user_table">
-      <div id="userPart" style="width: 300px;height:300px;"></div>
+      <div id="userPart" class="tubiao"></div>
     </div>
   </div>
 </template>
@@ -19,7 +19,8 @@ export default {
       // 需要合并的对象
       options: {
         tooltip: {
-          trigger: 'item'
+          trigger: 'item',
+          formatter: '{a} <br/>{b}: {c} ({d}%)'
         },
         legend: {
           top: '5%',
@@ -29,12 +30,12 @@ export default {
           {
             name: '所占比例',
             type: 'pie',
-            radius: ['40%', '70%'],
+            radius: ['45%', '60%'],
             avoidLabelOverlap: false,
             itemStyle: {
               borderRadius: 10,
               borderColor: '#fff',
-              borderWidth: 2
+              borderWidth: 1
             },
             label: {
               show: false,
@@ -43,7 +44,7 @@ export default {
             emphasis: {
               label: {
                 show: true,
-                fontSize: '25',
+                fontSize: '20',
                 fontWeight: 'bold'
               }
             },
@@ -96,5 +97,9 @@ export default {
 }
 .user_table {
   margin-top: 20px;
+}
+.tubiao {
+  width: 320px;
+  height: 300px;
 }
 </style>
