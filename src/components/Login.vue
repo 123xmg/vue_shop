@@ -1,33 +1,45 @@
 <template>
   <div class="login_container">
     <div class="info_syt">
-      <div class="login_box">
-        <p class="logo_title">小鲸鱼健身房管理</p>
-        <el-form ref="loginFormRef" :rules="loginFormRules" :model="loginForm" label-width="0px" class="login_form">
-          <el-form-item prop="username">
-            <el-input  placeholder="请输入用户手机号" prefix-icon="iconfont icon-user" v-model="loginForm.username"></el-input>
-          </el-form-item>
-          <el-form-item prop="password">
-            <el-input prefix-icon="iconfont icon-3702mima" placeholder="请输入密码" v-model="loginForm.password" type="password"></el-input>
-          </el-form-item>
-          <el-form-item prop="verifyCode">
-            <el-input class="loginInput" type="code" placeholder="请输入验证码" v-model="loginForm.verifyCode"/>
-            <div id="v_container" class="yamImg"></div>
-          </el-form-item>
-          <!-- 按钮区 -->
-          <el-form-item>
-            <el-button class="login_btn" type="primary" @click="login">登录</el-button>
-          </el-form-item>
-        </el-form>
+      <div v-if="isLogin">
+        <div class="login_box">
+          <p class="logo_title">小鲸鱼健身房管理</p>
+          <el-form ref="loginFormRef" :rules="loginFormRules" :model="loginForm" label-width="0px" class="login_form">
+            <el-form-item prop="username">
+              <el-input placeholder="请输入用户手机号" prefix-icon="iconfont icon-user" v-model="loginForm.username"></el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+              <el-input prefix-icon="iconfont icon-3702mima" placeholder="请输入密码" v-model="loginForm.password" type="password"></el-input>
+            </el-form-item>
+            <el-form-item prop="verifyCode">
+              <el-input class="loginInput" type="code" placeholder="请输入验证码" v-model="loginForm.verifyCode" />
+              <div id="v_container" class="yamImg"></div>
+            </el-form-item>
+            <!-- 按钮区 -->
+            <el-form-item>
+              <el-button class="login_btn" type="primary" @click="login">登录</el-button>
+            </el-form-item>
+            <el-form-item>
+              <router-link :to="{ name: 'alteration' }" class="forge-password" style="float: right;color:#f6f6f6;">忘记密码</router-link>
+              <div @click="isLoginFun" class="forge-password" style="float: right;margin-right: 10px;color:#0899d5;">注册账户</div>
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
+      <div v-else>
+        <register></register>
       </div>
     </div>
   </div>
 </template>
 <script>
 import { GVerify } from '../../static/js/vertifyCode'
+import Register from './Register'
 export default {
+  components: { Register },
   data() {
     return {
+      isLogin: true,
       loginForm: {
         username: 'admin',
         password: '123456',
@@ -35,20 +47,18 @@ export default {
       },
       loginFormRules: {
         username: [
-          { required: true, message: '请输入登录名称', trigger: 'change' },
+          { required: true, message: '请输入手机号', trigger: 'change' },
           { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入登录密码', trigger: 'change' },
           { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
         ],
-        verifyCode: [
-          { required: true, message: '请输入验证码', trigger: 'blur' }
-        ]
+        verifyCode: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
       }
     }
   },
-  mounted () {
+  mounted() {
     this.verifyCode = new GVerify('v_container')
   },
   methods: {
@@ -58,9 +68,12 @@ export default {
     //   this.loginForm.password = ''
     //   this.$refs.loginFormRef.resetFields()
     // },
+    isLoginFun() {
+      this.isLogin = false
+    },
     // 登录
     login() {
-      this.$refs.loginFormRef.validate(async (valid) => {
+      this.$refs.loginFormRef.validate(async valid => {
         if (!valid) {
           return
         }
@@ -117,6 +130,7 @@ export default {
   height: 50vh;
 }
 .logo_title {
+  margin-bottom: 15px;
   font-family: SourceHanSansCN-Heavy;
   font-size: 30px;
   font-weight: 700;
@@ -134,7 +148,7 @@ export default {
 .login_btn {
   width: 100%;
 }
-.loginInput{
+.loginInput {
   width: calc(100% - 125px);
 }
 .yamImg {
