@@ -11,7 +11,7 @@
         <div class="message-num">1</div>
       </div>
       <div class="off_login" @click="handleLogout">
-        <i class="el-icon-switch-button" style="margin-right: 5px;" ></i>
+        <i class="el-icon-switch-button" style="margin-right: 5px;"></i>
         <span>退出登录</span>
       </div>
     </el-header>
@@ -48,18 +48,21 @@ export default {
       isCollaspse: false,
       menuList: {},
       iconObj: {
-        125: 'iconfont icon-user1',
-        103: 'iconfont icon-tiji',
-        101: 'iconfont icon-lock',
-        102: 'iconfont icon-danju',
-        145: 'iconfont icon-baobiao'
+        110: 'iconfont icon-souye-copy',
+        111: 'iconfont icon-user1',
+        116: 'iconfont icon-lock',
+        117: 'iconfont icon-danju',
+        118: 'iconfont icon-changdi',
+        119: 'iconfont icon-xiaoxi1',
+        120: 'iconfont icon-yijian1'
       },
-      activePath: ''
+      activePath: '/home'
     }
   },
   created() {
     this.getMenuList()
     this.activePath = window.sessionStorage.getItem('activePath')
+    console.log('this.activePath', this.activePath)
   },
   methods: {
     // 退出
@@ -70,24 +73,26 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        window.sessionStorage.clear()
-        this.$router.push('/login')
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消退出'
-        })
       })
+        .then(() => {
+          window.sessionStorage.clear()
+          this.$router.push('/login')
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消退出'
+          })
+        })
     },
     // 获取菜单列表
     async getMenuList() {
-      const { data: res } = await this.$http.get('menus')
-      if (res.meta.status !== 200) {
-        return this.$message.error(res.meta.msg)
+      const { data: res } = await this.$http.get('users/menu')
+      console.log('查询得到的数据', res)
+      if (res.code !== '200') {
+        return this.$message.error(res.msg)
       } else {
-        this.menuList = res.data
-        console.log('查询得到的数据', res)
+        this.menuList = res.msg
       }
     },
     // 是否折叠菜单栏
@@ -158,12 +163,12 @@ export default {
     vertical-align: middle;
   }
 }
-.icon-message{
+.icon-message {
   position: relative;
   width: 25px;
   margin-right: 110px;
 }
-.message-num{
+.message-num {
   position: absolute;
   top: -8px;
   right: 2px;

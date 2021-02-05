@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
+import Register from '../components/Register.vue'
 import Home from '../components/home.vue'
 import welcome from '../components/index/Analysis.vue'
 import user from '../components/user/user.vue'
@@ -23,6 +24,11 @@ const routes = [
   {
     path: '/login',
     component: Login
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: Register
   },
   {
     path: '/home',
@@ -80,7 +86,7 @@ const router = new VueRouter({
 // 挂载路由导航守卫
 router.beforeEach((to, from, next) => {
   // to 到哪里去，from从哪里来，next放行
-  if (to.path === '/login') {
+  if (to.path === '/login' || to.path === '/register') {
     return next()
   } else {
     if (!window.sessionStorage.getItem('token')) {

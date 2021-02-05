@@ -1,56 +1,49 @@
 <template>
   <div class="login_container">
     <div class="info_syt">
-      <div v-if="isLogin">
-        <div class="login_box">
-          <p class="logo_title">小鲸鱼健身房管理</p>
-          <el-form ref="loginFormRef" :rules="loginFormRules" :model="loginForm" label-width="0px" class="login_form">
-            <el-form-item prop="username">
-              <el-input placeholder="请输入用户手机号" prefix-icon="iconfont icon-user" v-model="loginForm.username"></el-input>
-            </el-form-item>
-            <el-form-item prop="password">
-              <el-input prefix-icon="iconfont icon-3702mima" placeholder="请输入密码" v-model="loginForm.password" type="password"></el-input>
-            </el-form-item>
-            <el-form-item prop="verifyCode">
-              <el-input class="loginInput" type="code" placeholder="请输入验证码" v-model="loginForm.verifyCode" />
-              <div id="v_container" class="yamImg"></div>
-            </el-form-item>
-            <!-- 按钮区 -->
-            <el-form-item>
-              <el-button class="login_btn" type="primary" @click="login">登录</el-button>
-            </el-form-item>
-            <el-form-item>
-              <router-link :to="{ name: 'alteration' }" class="forge-password" style="float: right;color:#f6f6f6;">忘记密码</router-link>
-              <div @click="isLoginFun" class="forge-password" style="float: right;margin-right: 10px;color:#0899d5;">注册账户</div>
-            </el-form-item>
-          </el-form>
-        </div>
-      </div>
-      <div v-else>
-        <register></register>
+      <div class="login_box">
+        <p class="logo_title">小鲸鱼健身房管理</p>
+        <el-form ref="loginFormRef" :rules="loginFormRules" :model="loginForm" label-width="0px" class="login_form">
+          <el-form-item prop="tel">
+            <el-input placeholder="请输入用户手机号" prefix-icon="iconfont icon-user" v-model="loginForm.tel"></el-input>
+          </el-form-item>
+          <el-form-item prop="pwd">
+            <el-input prefix-icon="iconfont icon-3702mima" placeholder="请输入密码" v-model="loginForm.pwd" type="password"></el-input>
+          </el-form-item>
+          <el-form-item prop="verifyCode">
+            <el-input class="loginInput" type="code" placeholder="请输入验证码" v-model="loginForm.verifyCode" />
+            <div id="v_container" class="yamImg"></div>
+          </el-form-item>
+          <!-- 按钮区 -->
+          <el-form-item>
+            <el-button class="login_btn" type="primary" @click="login">登录</el-button>
+          </el-form-item>
+          <el-form-item>
+            <router-link :to="{ name: 'register' }" class="forge-password" style="float: right;color:#f6f6f6;">忘记密码</router-link>
+            <router-link :to="{ name: 'register' }" class="forge-password" style="float: right;margin-right: 10px;color:#0899d5;">注册账户</router-link>
+          </el-form-item>
+        </el-form>
       </div>
     </div>
   </div>
 </template>
 <script>
 import { GVerify } from '../../static/js/vertifyCode'
-import Register from './Register'
 export default {
-  components: { Register },
   data() {
     return {
-      isLogin: true,
       loginForm: {
-        username: 'admin',
-        password: '123456',
+        tel: '17852756592',
+        pwd: '123456789',
         verifyCode: ''
       },
+      model: {},
       loginFormRules: {
-        username: [
+        tel: [
           { required: true, message: '请输入手机号', trigger: 'change' },
-          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+          { min: 11, max: 11, message: '输入的长度为11', trigger: 'blur' }
         ],
-        password: [
+        pwd: [
           { required: true, message: '请输入登录密码', trigger: 'change' },
           { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
         ],
@@ -68,27 +61,30 @@ export default {
     //   this.loginForm.password = ''
     //   this.$refs.loginFormRef.resetFields()
     // },
-    isLoginFun() {
-      this.isLogin = false
-    },
     // 登录
     login() {
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) {
           return
         }
-        // const verifyCode = this.loginForm.verifyCode
-        // const verifyFlag = this.verifyCode.validate(verifyCode)
-        // if (!verifyFlag) {
-        //   this.$notify.info({
-        //     title: '系统提示',
-        //     message: '验证码输入错误'
-        //   })
-        //   this.verifyCode.refresh()
-        //   return
-        // }
-        const { data: res } = await this.$http.post('login', this.loginForm)
-        if (res.meta.status !== 200) {
+        const verifyCode = this.loginForm.verifyCode
+        console.log('输入的验证码', verifyCode)
+        const verifyFlag = this.verifyCode.validate(verifyCode)
+        console.log('验证的结果', verifyFlag)
+
+        if (!verifyFlag) {
+          this.$notify.info({
+            title: '系统提示',
+            message: '验证码输入错误'
+          })
+          this.loginForm.verifyCode = ''
+          this.verifyCode.refresh()
+          return
+        }
+        const formData = Object.assign(this.model, this.loginForm)
+        const { data: res } = await this.$http.post('users/userLogin', formData)
+        console.log('返回的数据', res)
+        if (res.code !== '200') {
           return this.$notify.error({
             title: '系统提示',
             message: '登录失败'
@@ -100,6 +96,9 @@ export default {
             type: 'success'
           })
           window.sessionStorage.setItem('token', res.data.token)
+          window.sessionStorage.setItem('username', res.data.username)
+          window.sessionStorage.setItem('tel', res.data.tel)
+          window.sessionStorage.setItem('role', res.data.role)
           this.$router.push('/home')
         }
       })
@@ -110,8 +109,8 @@ export default {
 <style lang="less" scoped>
 .login_container {
   // background: #2b4b6b;
-  background: url(../assets/img/login/logo.png) no-repeat left center;
-  background-size: 100% 100%;
+  background: url(../assets/img/login/logo.png) no-repeat center center;
+  background-size: 100%;
   height: 100%;
 }
 .info_syt {

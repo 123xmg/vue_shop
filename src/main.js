@@ -20,12 +20,13 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
 import axios from 'axios'
-axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+axios.defaults.baseURL = 'http://localhost:8081/'
 
 // 在request拦截其中展示进度条NProgress.start();
 axios.interceptors.request.use(config => {
   NProgress.start()
   config.headers.Authorization = window.sessionStorage.getItem('token')
+  config.headers.AuthorRole = window.sessionStorage.getItem('role')
   return config
 })
 

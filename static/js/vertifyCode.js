@@ -71,7 +71,9 @@ GVerify.prototype = {
     } else {
       txtArr = this.options.letterArr
     }
-
+    if (this.options.code !== '') {
+      this.options.code = ''
+    }
     for (var i = 1; i <= 4; i++) {
       var txt = txtArr[randomNum(0, txtArr.length)]
       this.options.code += txt

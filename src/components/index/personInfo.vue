@@ -1,20 +1,24 @@
 <template>
   <div>
-    <div>
+    <div class="zz_header">
       <div class="zz_slide"></div>
       <div class="zz_title">基本信息</div>
+      <div class="zz_more">
+        <i class="el-icon-male el-icon-edit"></i>
+      </div>
     </div>
     <div class="info">
       <div class="header_img">
         <img src="../../assets/img/shouye/user.png" alt="" />
       </div>
       <div class="header_info">
-        <p class="username">许三多
+        <p class="username">
+          {{ userInfo.username }}
           <i class="el-icon-female female" v-if="isMale == 1"></i>
           <i class="el-icon-male male" v-else></i>
         </p>
-        <p>手机号：17859656536</p>
-        <p>角色：管理员</p>
+        <p>手机号：{{ userInfo.tel }}</p>
+        <p>角色：{{ userInfo.role }}</p>
       </div>
     </div>
   </div>
@@ -24,13 +28,39 @@
 export default {
   data() {
     return {
-      isMale: 1
+      isMale: 0,
+      userInfo: {}
     }
+  },
+  mounted() {
+    let role = ''
+    if (window.sessionStorage.getItem('role') === '0') {
+      role = '普通用户'
+    }
+    if (window.sessionStorage.getItem('role') === '1') {
+      role = 'vip用户'
+    }
+    if (window.sessionStorage.getItem('role') === '2') {
+      role = '教练'
+    }
+    if (window.sessionStorage.getItem('role') === '3') {
+      role = '管理员'
+    }
+    this.$nextTick(() => {
+      this.userInfo = {
+        username: window.sessionStorage.getItem('username'),
+        tel: window.sessionStorage.getItem('tel'),
+        role: role
+      }
+    })
   }
 }
 </script>
 
 <style lang="less" scoped>
+.zz_header {
+  position: relative;
+}
 .zz_slide {
   display: inline-block;
   height: 20px;
@@ -43,6 +73,16 @@ export default {
 .zz_title {
   display: inline-block;
   font-size: 18px;
+}
+.zz_more {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  font-size: 16px;
+  color: #666;
+  &:hover {
+    color: #3498db;
+  }
 }
 .info {
   display: flex;
@@ -60,6 +100,7 @@ export default {
     height: 100%;
   }
 }
+
 .header_info {
   flex: 1;
   p {
@@ -67,8 +108,8 @@ export default {
   }
   .username {
     margin-top: 20px;
-    font-size: 20px;
-    font-weight: 900;
+    font-size: 18px;
+    font-weight: 700;
     color: #333333;
   }
 }
