@@ -1,25 +1,28 @@
 <template>
   <div>
     <!-- 面包屑导航 -->
-
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-
       <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-
       <el-breadcrumb-item>用户列表</el-breadcrumb-item>
     </el-breadcrumb>
 
     <!-- 卡片视图区 -->
 
     <el-card class="box-card">
-      <el-row :gutter="20">
+      <el-row :span="24">
         <el-col :span="8">
           <el-input placeholder="请输入用户名" v-model="queryInfo.query" clearable @clear="getUserList">
             <el-button icon="el-icon-search" slot="append" @click="getUserList"></el-button>
           </el-input>
         </el-col>
-
+        <el-col :span="2" />
+        <el-col :span="8">
+          <el-input placeholder="请输入角色" v-model="queryInfo.query" clearable @clear="getUserList">
+            <el-button icon="el-icon-search" slot="append" @click="getUserList"></el-button>
+          </el-input>
+        </el-col>
+        <el-col :span="2" />
         <el-col :span="4">
           <el-button type="primary" @click="addDialogVisible = true">添加用户</el-button>
         </el-col>

@@ -18,61 +18,22 @@ export default {
     return {
       // 需要合并的对象
       option: {
-        title: {
-          text: ''
+        xAxis: {
+          type: 'category',
+          data: ['2/5', '2/6', '2/7', '2/8', '2/9', '2/10', '2/11']
         },
-        tooltip: {
-          trigger: 'axis'
+        grid: {
+          top: '5% ',
+          left: '15%'
         },
-        legend: {
-          left: 'center',
-          data: ['一月', '二月', '三月', '四月', '五月']
+        yAxis: {
+          type: 'value'
         },
-        radar: [
-          {
-            indicator: [
-              { text: '一月', max: 10000 },
-              { text: '二月', max: 10000 },
-              { text: '三月', max: 10000 },
-              { text: '四月', max: 10000 },
-              { text: '五月', max: 10000 }
-            ],
-            radius: 80,
-            center: ['50%', '45%'],
-            name: {
-              formatter: '{value}',
-              textStyle: {
-                color: '#000' // 文字颜色
-              }
-            },
-            splitArea: {
-              areaStyle: {
-                // 圆环颜色
-                color: ['#ddd', '#fff', '#ddd', '#fff', '#ddd'],
-                shadowColor: '#ddd', // 圆颜色
-                shadowBlur: 10
-              }
-            },
-            axisLine: {
-              lineStyle: {
-                color: '#666' // 分割线
-              }
-            }
-          }
-        ],
         series: [
           {
-            type: 'radar',
-            tooltip: {
-              trigger: 'item'
-            },
-            areaStyle: {},
-            data: [
-              {
-                value: [2098, 3087, 5078, 7004, 9088],
-                name: '访问量'
-              }
-            ]
+            data: [2411, 2556, 2698, 2456, 3125, 3210, 2564],
+            type: 'bar',
+            barWidth: '50%'
           }
         ]
       }
