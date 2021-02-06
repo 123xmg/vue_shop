@@ -30,23 +30,28 @@
 
       <!-- 表格区 -->
 
-      <el-table :data="userList" border stripe>
-        <el-table-column type="index"> </el-table-column>
+      <el-table :data="userList" border stripe :header-cell-style="{ 'text-align': 'center' }" :default-sort="{ prop: 'state', order: 'descending' }">
+        <el-table-column type="index" align="center"> </el-table-column>
 
-        <el-table-column prop="username" label="姓名"> </el-table-column>
+        <el-table-column prop="username" label="姓名" align="center"> </el-table-column>
 
-        <el-table-column prop="mobile" label="电话"> </el-table-column>
+        <el-table-column prop="mobile" label="电话" align="center"> </el-table-column>
 
-        <el-table-column prop="email" label="邮箱"> </el-table-column>
-
-        <el-table-column prop="role_name" label="角色"> </el-table-column>
-
-        <el-table-column label="状态">
+        <el-table-column prop="role_name" label="角色" align="center">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.mg_state" @change="userStateChange(scope.row)"> </el-switch>
+            <span v-if="scope.row.role === '0'">普通用户</span>
+            <span v-if="scope.row.role === '1'">VIP用户</span>
+            <span v-if="scope.row.role === '2'">教练</span>
+            <span v-if="scope.row.role === '3'">管理员</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="180px">
+
+        <el-table-column label="状态" align="center" prop="state" sortable>
+          <template slot-scope="scope">
+            <el-switch v-model="scope.row.state" @change="userStateChange(scope.row)"> </el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="180px" align="center">
           <template slot-scope="scope">
             <el-button type="primary" icon="el-icon-edit" size="mini" @click="EditDialog(scope.row.id)"> </el-button>
 
@@ -151,7 +156,32 @@ export default {
       callback(new Error('请输入正确的手机号!'))
     }
     return {
-      userList: [],
+      userList: [
+        {
+          username: '许三多',
+          mobile: '172585522366',
+          role: '3',
+          state: true
+        },
+        {
+          username: '许四多',
+          mobile: '172585522366',
+          role: '2',
+          state: false
+        },
+        {
+          username: '许武多',
+          mobile: '172585522366',
+          role: '1',
+          state: false
+        },
+        {
+          username: '许多',
+          mobile: '172585522366',
+          role: '0',
+          state: true
+        }
+      ],
       total: 0,
       queryInfo: {
         query: '',
@@ -196,13 +226,13 @@ export default {
   },
   methods: {
     async getUserList() {
-      const { data: res } = await this.$http.get('users', { params: this.queryInfo })
-      if (res.meta.status !== 200) {
-        return this.$message.error('数据获取失败!')
-      } else {
-        this.userList = res.data.users
-        this.total = res.data.total
-      }
+      // const { data: res } = await this.$http.get('users', { params: this.queryInfo })
+      // if (res.meta.status !== 200) {
+      //   return this.$message.error('数据获取失败!')
+      // } else {
+      //   this.userList = res.data.users
+      //   this.total = res.data.total
+      // }
     },
     // 页码值发生改变
     handleCurrentChange(newPage) {

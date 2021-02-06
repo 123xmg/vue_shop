@@ -18,6 +18,13 @@ export default {
     return {
       // 需要合并的对象
       option: {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
         xAxis: {
           type: 'category',
           data: ['2/5', '2/6', '2/7', '2/8', '2/9', '2/10', '2/11']
@@ -31,6 +38,7 @@ export default {
         },
         series: [
           {
+            name: '点击量',
             data: [2411, 2556, 2698, 2456, 3125, 3210, 2564],
             type: 'bar',
             barWidth: '50%'
