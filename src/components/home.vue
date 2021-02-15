@@ -20,14 +20,28 @@
       <!-- 左边 -->
       <el-aside :width="isCollaspse ? '64px' : '200px'">
         <div class="toggle_menu" @click="toogleCollaspse">|||</div>
-        <el-menu background-color="#333847" text-color="#fff" active-text-color="#409fff" :collapse="isCollaspse" unique-opened :collapse-transition="false" router :default-active="activePath">
+        <el-menu
+          background-color="#333847"
+          text-color="#fff"
+          active-text-color="#409fff"
+          :collapse="isCollaspse"
+          unique-opened
+          :collapse-transition="false"
+          router
+          :default-active="activePath"
+        >
           <!-- 菜单一 -->
           <el-submenu :index="oneItem.id + ''" v-for="oneItem in menuList" :key="oneItem.id">
             <template slot="title">
               <i :class="iconObj[oneItem.id]"></i>
               <span>{{ oneItem.authName }}</span>
             </template>
-            <el-menu-item :index="'/' + twoItem.path" v-for="twoItem in oneItem.children" :key="twoItem.id" @click="savePath('/' + twoItem.path)">
+            <el-menu-item
+              :index="'/' + twoItem.path"
+              v-for="twoItem in oneItem.children"
+              :key="twoItem.id"
+              @click="savePath('/' + twoItem.path)"
+            >
               <i class="el-icon-s-grid"></i>
               <span>{{ twoItem.authName }}</span>
             </el-menu-item>
@@ -56,7 +70,7 @@ export default {
         119: 'iconfont icon-xiaoxi1',
         120: 'iconfont icon-yijian1'
       },
-      activePath: '/home'
+      activePath: '/welcome'
     }
   },
   created() {
@@ -88,7 +102,6 @@ export default {
     // 获取菜单列表
     async getMenuList() {
       const { data: res } = await this.$http.get('users/menu')
-      console.log('查询得到的数据', res)
       if (res.code !== '200') {
         return this.$message.error(res.msg)
       } else {

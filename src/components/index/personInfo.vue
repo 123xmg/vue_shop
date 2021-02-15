@@ -14,7 +14,7 @@
       <div class="header_info">
         <p class="username">
           {{ userInfo.username }}
-          <i class="el-icon-female female" v-if="isMale == 1"></i>
+          <i class="el-icon-female female" v-if="userInfo.sex == 1"></i>
           <i class="el-icon-male male" v-else></i>
         </p>
         <p>手机号：{{ userInfo.tel }}</p>
@@ -28,29 +28,30 @@
 export default {
   data() {
     return {
-      isMale: 0,
       userInfo: {}
     }
   },
   mounted() {
     let role = ''
-    if (window.sessionStorage.getItem('role') === '0') {
+    const sessionRole = window.sessionStorage.getItem('role')
+    if (sessionRole === '0') {
       role = '普通用户'
     }
-    if (window.sessionStorage.getItem('role') === '1') {
+    if (sessionRole === '1') {
       role = 'vip用户'
     }
-    if (window.sessionStorage.getItem('role') === '2') {
+    if (sessionRole === '2') {
       role = '教练'
     }
-    if (window.sessionStorage.getItem('role') === '3') {
+    if (sessionRole === '3') {
       role = '管理员'
     }
     this.$nextTick(() => {
       this.userInfo = {
         username: window.sessionStorage.getItem('username'),
         tel: window.sessionStorage.getItem('tel'),
-        role: role
+        role: role,
+        sex: window.sessionStorage.getItem('sex')
       }
     })
   }

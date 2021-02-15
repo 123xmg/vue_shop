@@ -85,6 +85,6 @@ export default {
 }
 .tubiao {
   width: 300px;
-  height: 300px;
+  height: 250px;
 }
 </style>

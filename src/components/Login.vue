@@ -98,6 +98,7 @@ export default {
           window.sessionStorage.setItem('token', res.data.token)
           window.sessionStorage.setItem('username', res.data.username)
           window.sessionStorage.setItem('tel', res.data.tel)
+          window.sessionStorage.setItem('sex', res.data.sex)
           window.sessionStorage.setItem('role', res.data.role)
           this.$router.push('/home')
         }

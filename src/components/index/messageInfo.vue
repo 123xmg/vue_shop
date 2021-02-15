@@ -40,10 +40,6 @@
           <a href="#">瑜伽健身今天优惠,每门课优惠200</a>
           <span>2021-09-05</span>
         </li>
-        <li>
-          <a href="#">瑜伽健身今天优惠,每门课优惠200</a>
-          <span>2021-09-05</span>
-        </li>
       </ul>
     </div>
   </div>
@@ -59,7 +55,7 @@ export default {
 <style lang="less" scoped>
 .zz_header {
   position: relative;
-  margin-bottom: 35px;
+  margin-bottom: 20px;
 }
 .zz_slide {
   display: inline-block;

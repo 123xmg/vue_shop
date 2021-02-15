@@ -33,16 +33,21 @@
       <el-table :data="userList" border stripe :header-cell-style="{ 'text-align': 'center' }" :default-sort="{ prop: 'state', order: 'descending' }">
         <el-table-column type="index" align="center"> </el-table-column>
 
-        <el-table-column prop="username" label="姓名" align="center"> </el-table-column>
+        <el-table-column prop="username" label="用户名" align="center"> </el-table-column>
 
         <el-table-column prop="mobile" label="电话" align="center"> </el-table-column>
-
-        <el-table-column prop="role_name" label="角色" align="center">
+        <el-table-column label="性别" align="center" prop="sex" sortable>
           <template slot-scope="scope">
-            <span v-if="scope.row.role === '0'">普通用户</span>
-            <span v-if="scope.row.role === '1'">VIP用户</span>
-            <span v-if="scope.row.role === '2'">教练</span>
-            <span v-if="scope.row.role === '3'">管理员</span>
+            <span v-if="scope.row.sex == '0'">男</span>
+            <span v-if="scope.row.sex == '1'">女</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="角色" align="center" prop="role" sortable>
+          <template slot-scope="scope">
+            <span v-if="scope.row.role == '0'">普通用户</span>
+            <span v-if="scope.row.role == '1'">VIP用户</span>
+            <span v-if="scope.row.role == '2'">教练</span>
+            <span v-if="scope.row.role == '3'">管理员</span>
           </template>
         </el-table-column>
 
@@ -53,7 +58,7 @@
         </el-table-column>
         <el-table-column label="操作" width="180px" align="center">
           <template slot-scope="scope">
-            <el-button type="primary" icon="el-icon-edit" size="mini" @click="EditDialog(scope.row.id)"> </el-button>
+            <el-button type="primary" icon="el-icon-edit" size="mini" @click="EditDialog(scope.row)"> </el-button>
 
             <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteBox(scope.row.id)"></el-button>
             <el-tooltip class="item" effect="dark" content="分配角色" placement="top" :enterable="false">
@@ -97,24 +102,6 @@
         <el-button type="primary" @click="addUser">确 定</el-button>
       </span>
     </el-dialog>
-    <!-- 修改用户的弹出框 -->
-    <el-dialog title="添加用户" :visible.sync="showEditDialog" width="50%" @close="editDialogClose">
-      <el-form :model="editForm" ref="editUserRef" :rules="editFromrules" label-width="70px">
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="editForm.username" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="editForm.email"></el-input>
-        </el-form-item>
-        <el-form-item label="电话" prop="mobile">
-          <el-input v-model="editForm.mobile"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="showEditDialog = false">取 消</el-button>
-        <el-button type="primary" @click="editOk">确 定</el-button>
-      </span>
-    </el-dialog>
     <!-- 分配角色的弹出框 -->
     <el-dialog title="添加用户" :visible.sync="setRoleRightDialog" width="50%" @close="setRoleDialogClose">
       <p>当前用户名：{{ setRoleInfo.username }}</p>
@@ -130,10 +117,17 @@
         <el-button type="primary" @click="setRoleOk">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 编辑用户的弹框 -->
+    <editUser ref="editUser" />
   </div>
 </template>
 <script>
+import editUser from './editUser'
+
 export default {
+  components: {
+    editUser
+  },
   data() {
     var emailcheckAge = (rule, value, callback) => {
       if (!value) {
@@ -156,32 +150,7 @@ export default {
       callback(new Error('请输入正确的手机号!'))
     }
     return {
-      userList: [
-        {
-          username: '许三多',
-          mobile: '172585522366',
-          role: '3',
-          state: true
-        },
-        {
-          username: '许四多',
-          mobile: '172585522366',
-          role: '2',
-          state: false
-        },
-        {
-          username: '许武多',
-          mobile: '172585522366',
-          role: '1',
-          state: false
-        },
-        {
-          username: '许多',
-          mobile: '172585522366',
-          role: '0',
-          state: true
-        }
-      ],
+      userList: [],
       total: 0,
       queryInfo: {
         query: '',
@@ -199,7 +168,6 @@ export default {
       // 已选中的权限id
       selectRoleId: '',
       addDialogVisible: false,
-      showEditDialog: false,
       setRoleRightDialog: false,
       addFromrules: {
         username: [
@@ -213,11 +181,6 @@ export default {
 
         email: [{ validator: emailcheckAge, trigger: 'blur' }],
         mobile: [{ validator: phonecheckAge, trigger: 'blur' }]
-      },
-      editForm: {},
-      editFromrules: {
-        email: [{ validator: emailcheckAge, trigger: 'blur' }],
-        mobile: [{ validator: phonecheckAge, trigger: 'blur' }]
       }
     }
   },
@@ -225,14 +188,28 @@ export default {
     this.getUserList()
   },
   methods: {
+    EditDialog(datasource) {
+      this.$refs.editUser.editVisible = true
+      this.$refs.editUser.editForm = datasource
+    },
+    // async getUserList() {
+    // const { data: res } = await this.$http.get('users', { params: this.queryInfo })
+    // if (res.meta.status !== 200) {
+    //   return this.$message.error('数据获取失败!')
+    // } else {
+    //   this.userList = res.data.users
+    //   this.total = res.data.total
+    // }
+    // },
     async getUserList() {
-      // const { data: res } = await this.$http.get('users', { params: this.queryInfo })
-      // if (res.meta.status !== 200) {
-      //   return this.$message.error('数据获取失败!')
-      // } else {
-      //   this.userList = res.data.users
-      //   this.total = res.data.total
-      // }
+      const { data: res } = await this.$http.get('users/allUser')
+      if (res.code !== '200') {
+        return this.$message.error('数据获取失败!')
+      } else {
+        console.log('所有用户的信息', res)
+        this.userList = res.data
+        // this.total = res.data.total
+      }
     },
     // 页码值发生改变
     handleCurrentChange(newPage) {
@@ -273,34 +250,7 @@ export default {
       })
       this.addDialogVisible = false
     },
-    // 修改用户
-    async EditDialog(userId) {
-      const { data: res } = await this.$http.get('users/' + userId)
-      if (res.meta.status !== 200) {
-        return this.$message.error('请求失败')
-      } else {
-        this.editForm = res.data
-        this.showEditDialog = true
-      }
-    },
-    editDialogClose() {
-      this.$refs.editFromrules.resetFields()
-    },
-    editOk() {
-      this.$refs.editUserRef.validate(async valid => {
-        if (!valid) {
-          return
-        }
-        const { data: res } = await this.$http.put('users/' + this.editForm.id, { id: this.editForm.id, email: this.editForm.email, mobile: this.editForm.mobile })
-        if (res.meta.status !== 200) {
-          return this.$message.error('修改失败')
-        } else {
-          this.getUserList()
-          this.showEditDialog = false
-          return this.$message.success('修改成功')
-        }
-      })
-    },
+
     // 删除用户
     async deleteBox(userId) {
       const confirmresult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
