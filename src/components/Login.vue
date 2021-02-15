@@ -92,7 +92,7 @@ export default {
         } else {
           this.$notify({
             title: '系统提示',
-            message: '登录成功',
+            message: res.msg,
             type: 'success'
           })
           window.sessionStorage.setItem('token', res.data.token)
