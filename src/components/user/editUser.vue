@@ -1,12 +1,15 @@
 <!-- 编辑用户 -->
 <template>
   <div>
-    <el-dialog title="编辑用户信息" :visible.sync="editVisible" width="50%" @close="close">
+    <el-dialog :title="title" :visible.sync="editVisible" width="50%" @close="close">
       <el-form :model="editForm" ref="editUserRef" :rules="editFromrules" label-width="85px">
         <el-form-item label="用户名：" prop="username">
           <el-input v-model="editForm.username" placeholder="请输入用户名"></el-input>
         </el-form-item>
-        <el-form-item label="手机号：" prop="tel" required>
+        <el-form-item label="密码" prop="pwd">
+          <el-input v-model="editForm.pwd" placeholder="请输入密码" type="password"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号：" prop="tel">
           <el-input v-model="editForm.tel" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <el-form-item label="性别：" prop="sex">
@@ -25,7 +28,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="showEditDialog = false">取 消</el-button>
+        <el-button @click="editVisible = false">取 消</el-button>
         <el-button type="primary" @click="editOk">确 定</el-button>
       </span>
     </el-dialog>
@@ -47,7 +50,9 @@ export default {
     }
     return {
       editVisible: false,
+      title: '添加用户',
       editForm: {},
+      model: {},
       editFromrules: {
         username: [
           { required: true, message: '请输入用户名!', trigger: 'blur' },
@@ -58,42 +63,58 @@ export default {
           { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
         ],
         tel: [{ validator: phonecheckAge, trigger: 'blur' }]
+      },
+      url: {
+        add: '',
+        edit: ''
       }
     }
   },
 
   methods: {
-    // 修改用户
-    async EditDialog(userId) {
-      const { data: res } = await this.$http.get('users/' + userId)
-      if (res.meta.status !== 200) {
-        return this.$message.error('请求失败')
-      } else {
-        this.editForm = res.data
-        this.showEditDialog = true
-      }
+    add() {
+      this.edit({})
+    },
+    edit(record) {
+      console.log('编辑', record)
+      record.role = parseInt(record.role) || record.role
+      this.editForm = {}
+      this.editForm = Object.assign({}, record)
+      this.model = Object.assign({}, record)
+      this.editVisible = true
     },
     editOk() {
       this.$refs.editUserRef.validate(async valid => {
         if (!valid) {
           return
         }
-        const { data: res } = await this.$http.put('users/' + this.editForm.id, {
-          id: this.editForm.id,
-          email: this.editForm.email,
-          mobile: this.editForm.mobile
-        })
-        if (res.meta.status !== 200) {
-          return this.$message.error('修改失败')
+        const formData = Object.assign({}, this.editForm)
+        if (this.editForm.userId) {
+          // 编辑用户
+          const { data: res } = await this.$http.put('users/allUser', formData)
+          if (res.code !== '200') {
+            this.$message.error('修改失败')
+            this.close()
+          } else {
+            this.$message.success('修改成功')
+            this.editVisible = false
+            this.$emit('ok')
+          }
         } else {
-          this.getUserList()
-          this.showEditDialog = false
-          return this.$message.success('修改成功')
+          // 添加用户
+          const { data: res } = await this.$http.post('users/allUser', formData)
+          if (res.code !== '200') {
+            this.$message.error('添加失败')
+          } else {
+            this.$message.success('添加成功')
+            this.editVisible = false
+            this.$emit('ok')
+          }
         }
       })
     },
     close() {
-      this.$refs.editFromrules.resetFields()
+      this.editForm = this.model
     }
   }
 }

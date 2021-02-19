@@ -21,7 +21,7 @@
           </el-input>
         </el-col>
         <el-col :span="4" style="margin-left:10px">
-          <el-button type="primary" @click="addDialogVisible = true">添加用户</el-button>
+          <el-button type="primary" @click="handleAdd">添加用户</el-button>
         </el-col>
       </el-row>
 
@@ -73,7 +73,7 @@
               type="danger"
               icon="el-icon-delete"
               size="mini"
-              @click="deleteBox(scope.row.id)"
+              @click="deleteBox(scope.row.userId)"
             ></el-button>
           </template>
         </el-table-column>
@@ -93,7 +93,7 @@
       </div>
     </el-card>
     <!-- 添加、编辑用户的弹框 -->
-    <editUser ref="editUser" />
+    <editUser ref="editUser" @ok="modalFormOk" />
   </div>
 </template>
 <script>
@@ -111,12 +111,6 @@ export default {
         query: '',
         pagenum: 1,
         pagesize: 4
-      },
-      addForm: {
-        username: '',
-        password: '',
-        email: '',
-        mobile: ''
       }
     }
   },
@@ -146,12 +140,15 @@ export default {
     },
     // 开关的设置的管理
     async userStateChange(userInfo) {
-      const { data: res } = await this.$http.put(`users/${userInfo.id}/state/${userInfo.mg_state}`)
-      if (res.meta.status !== 200) {
-        userInfo.mg_state = !userInfo.mg_state
-        return this.$message.error('更改失败')
+      console.log('该用户所有的信息', userInfo)
+      const { data: res } = await this.$http.put(
+        `users/userStatus?id=${userInfo.userId}&lock=${userInfo.state}`
+      )
+      if (res.code !== '200') {
+        this.getUserList()
+        return this.$message.error('用户状态修改失败')
       }
-      this.$message.success('更改成功')
+      this.$message.success('用户状态修改成功')
     },
     // 删除用户
     async deleteBox(userId) {
@@ -163,8 +160,8 @@ export default {
       if (confirmresult !== 'confirm') {
         this.$message('已取消删除')
       } else {
-        const { data: res } = await this.$http.delete('users/' + userId)
-        if (res.meta.status !== 200) {
+        const { data: res } = await this.$http.delete('users/allUser/?id=' + userId)
+        if (res.code !== '200') {
           return this.$message.error('删除失败')
         } else {
           this.$message({
@@ -176,8 +173,15 @@ export default {
       }
     },
     EditDialog(datasource) {
-      this.$refs.editUser.editVisible = true
-      this.$refs.editUser.editForm = datasource
+      this.$refs.editUser.title = '编辑用户信息'
+      this.$refs.editUser.edit(datasource)
+    },
+    handleAdd() {
+      this.$refs.editUser.title = '添加用户信息'
+      this.$refs.editUser.add()
+    },
+    modalFormOk() {
+      this.getUserList()
     }
   }
 }
