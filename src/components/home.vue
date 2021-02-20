@@ -6,9 +6,17 @@
         <img src="../assets/logo.png" alt="xiaojingyu" title="小鲸鱼" />
         <span>小鲸鱼健身房管理系统</span>
       </div>
-      <div class="icon-message">
-        <i class="iconfont icon-xiaoxi"></i>
-        <div class="message-num">1</div>
+      <!--  -->
+      <div class="msg">
+        <el-tooltip placement="bottom" effect="light" popper-class="test">
+          <div class="icon-message">
+            <i class="iconfont icon-xiaoxi"></i>
+            <div class="message-num">1</div>
+          </div>
+          <div slot="content">
+            <notifyMsg></notifyMsg>
+          </div>
+        </el-tooltip>
       </div>
       <div class="off_login" @click="handleLogout">
         <i class="el-icon-switch-button" style="margin-right: 5px;"></i>
@@ -56,7 +64,12 @@
   </el-container>
 </template>
 <script>
+import notifyMsg from './notify/notifyMsg.vue'
+
 export default {
+  components: {
+    notifyMsg
+  },
   data() {
     return {
       isCollaspse: false,
@@ -176,21 +189,27 @@ export default {
     vertical-align: middle;
   }
 }
+.msg {
+  position: absolute;
+  right: 130px;
+  z-index: 1;
+}
 .icon-message {
   position: relative;
-  width: 25px;
-  margin-right: 110px;
 }
 .message-num {
   position: absolute;
-  top: -8px;
-  right: 2px;
-  width: 15px;
-  height: 15px;
-  font-size: 15px;
+  top: -3px;
+  left: 9px;
+  padding: 1px 3px;
+  font-size: 5px;
   line-height: 15px;
   text-align: center;
-  border-radius: 50%;
+  border-radius: 5px;
   background-color: red;
+}
+.test {
+  border: transparent !important;
+  box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1) inset !important;
 }
 </style>

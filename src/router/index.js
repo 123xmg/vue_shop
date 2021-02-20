@@ -13,6 +13,10 @@ import list from '../components/goods/list.vue'
 import add from '../components/goods/add.vue'
 import order from '../components/order/order.vue'
 import report from '../components/report/report.vue'
+// 课程
+import course from '../components/course/course.vue'
+// 消息通知
+import notify from '../components/notify/notify.vue'
 
 Vue.use(VueRouter)
 
@@ -44,6 +48,14 @@ const routes = [
         component: user
       },
       {
+        path: '/course',
+        component: course
+      },
+      {
+        path: '/message',
+        component: notify
+      },
+      {
         path: '/rights',
         component: rights
       },
@@ -55,6 +67,7 @@ const routes = [
         path: '/categories',
         component: cate
       },
+
       {
         path: '/params',
         component: params
