@@ -3,7 +3,9 @@
     <el-tab-pane label="系统通知(3)" name="1">
       <ul class="nav">
         <li style="padding-top:0">
-          <p class="nav-title"><el-tag type="danger" size="mini">NEW</el-tag>欢迎您,您已成为大会员,快来查看会员优惠</p>
+          <p class="nav-title">
+            <el-tag type="danger" size="mini">NEW</el-tag>欢迎您,您已成为大会员,快来查看会员优惠
+          </p>
           <p class="nav-time">2021-1-21 12:25</p>
         </li>
         <li>
@@ -26,6 +28,9 @@ export default {
     return {
       activeName: '1'
     }
+  },
+  methods: {
+    handleClick() {}
   }
 }
 </script>

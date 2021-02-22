@@ -41,7 +41,8 @@ import {
   Notification,
   RadioGroup,
   Radio,
-  Popconfirm
+  divider,
+  DatePicker
 } from 'element-ui'
 
 import Timeline from './timeline/index.js'
@@ -49,7 +50,8 @@ import TimelineItem from './timeline-item/index.js'
 
 Vue.use(Timeline)
 Vue.use(TimelineItem)
-Vue.use(Popconfirm)
+Vue.use(divider)
+Vue.use(DatePicker)
 Vue.use(Radio)
 Vue.use(RadioGroup)
 Vue.use(Upload)

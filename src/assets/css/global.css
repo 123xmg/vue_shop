@@ -38,7 +38,7 @@ p {
 a,
 button,
 input {
-    -webkit-tap-highlight-color: rgba(255, 0, 0, 0);
+  -webkit-tap-highlight-color: rgba(255, 0, 0, 0);
 }
 ul,
 li {
@@ -48,6 +48,8 @@ li {
 }
 /*包含以下四种的链接*/
 a {
+  color: #1890ff;
+  cursor: pointer;
   text-decoration: none;
 }
 /*正常的未被访问过的链接*/
@@ -65,4 +67,11 @@ a:hover {
 /* 正在点击的链接*/
 a:active {
   text-decoration: none;
+}
+textarea {
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    '微软雅黑', Arial, sans-serif;
+}
+.el-table tbody tr:hover td {
+  background-color: #e6f7ff !important;
 }

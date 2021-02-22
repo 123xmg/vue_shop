@@ -3,30 +3,43 @@
   <div>
     <el-dialog :title="title" :visible.sync="editVisible" width="50%" @close="close">
       <el-form :model="editForm" ref="editUserRef" :rules="editFromrules" label-width="85px">
-        <el-form-item label="用户名：" prop="username">
-          <el-input v-model="editForm.username" placeholder="请输入用户名"></el-input>
+        <el-form-item label="标题：" prop="title">
+          <el-input v-model="editForm.title" placeholder="请输入标题"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="pwd">
-          <el-input v-model="editForm.pwd" placeholder="请输入密码" type="password"></el-input>
+        <el-form-item label="内容:" prop="content">
+          <el-input
+            type="textarea"
+            :autosize="{ minRows: 2, maxRows: 4 }"
+            v-model="editForm.content"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
-        <el-form-item label="手机号：" prop="tel">
-          <el-input v-model="editForm.tel" placeholder="请输入手机号"></el-input>
+        <el-form-item label="发送时间：" prop="time">
+          <el-date-picker
+            type="date"
+            v-model="editForm.time"
+            placeholder="请输入发送时间"
+            style="width: 100%;"
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
+            @change="getTime"
+          ></el-date-picker>
         </el-form-item>
-        <el-form-item label="性别：" prop="sex">
-          <el-radio-group v-model="editForm.sex">
-            <el-radio :label="0">男</el-radio>
-            <el-radio :label="1">女</el-radio>
+        <el-form-item label="接收人：" prop="users">
+          <!-- <el-input v-model="editForm.user" placeholder="请输入接收人"></el-input> -->
+          <el-radio-group v-model="editForm.users">
+            <el-radio :label="3">管理员</el-radio>
+            <el-radio :label="2">教练</el-radio>
+            <el-radio :label="1">VIP用户</el-radio>
+            <el-radio :label="0">普通用户</el-radio>
+            <el-radio :label="4">指定用户</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="角色：" prop="role">
-          <el-select v-model="editForm.role" placeholder="请选择用户角色" style="width:100%">
-            <el-option label="普通用户" :value="0"></el-option>
-            <el-option label="VIP用户" :value="1"></el-option>
-            <el-option label="教练" :value="2"></el-option>
-            <el-option label="管理员" :value="3"></el-option>
-          </el-select>
+        <el-form-item label="接收人：" prop="user" v-show="editForm.users == '4'">
+          <el-input v-model="editForm.user" placeholder="请输入接收人"></el-input>
         </el-form-item>
       </el-form>
+
       <span slot="footer" class="dialog-footer">
         <el-button @click="editVisible = false">取 消</el-button>
         <el-button type="primary" @click="editOk">确 定</el-button>
@@ -36,33 +49,16 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   data() {
-    var phonecheckAge = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('请输入手机号!'))
-      }
-      const regPhone = /^1[3456789]\d{9}$/
-      if (regPhone.test(value)) {
-        return callback()
-      }
-      callback(new Error('请输入正确的手机号!'))
-    }
     return {
       editVisible: false,
       title: '添加用户',
       editForm: {},
       model: {},
       editFromrules: {
-        username: [
-          { required: true, message: '请输入用户名!', trigger: 'blur' },
-          { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
-        ],
-        pwd: [
-          { required: true, message: '请输入密码!', trigger: 'blur' },
-          { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
-        ],
-        tel: [{ validator: phonecheckAge, trigger: 'blur' }]
+        users: [{ required: true, message: '请选择接收人!', trigger: 'blur' }]
       },
       url: {
         add: '',
@@ -73,11 +69,17 @@ export default {
 
   methods: {
     add() {
-      this.edit({})
+      this.edit({
+        time: moment(new Date()).format('YYYY-MM-DD')
+      })
     },
     edit(record) {
-      console.log('编辑', record)
-      record.role = parseInt(record.role) || record.role
+      if (record.user - 0 < 4) {
+        record.users = parseInt(record.user)
+      } else {
+        record.users = 4
+      }
+      console.log('bianji', record)
       this.editForm = {}
       this.editForm = Object.assign({}, record)
       this.model = Object.assign({}, record)
@@ -89,9 +91,14 @@ export default {
           return
         }
         const formData = Object.assign({}, this.editForm)
-        if (this.editForm.userId) {
+        console.log(formData)
+        if (formData.users !== 4) {
+          formData.user = formData.users
+        }
+        if (this.editForm.id) {
           // 编辑用户
-          const { data: res } = await this.$http.put('users/allUser', formData)
+          console.log('编辑用户提交的数据', formData)
+          const { data: res } = await this.$http.put('notify/list', formData)
           if (res.code !== '200') {
             this.$message.error('修改失败')
             this.close()
@@ -102,7 +109,9 @@ export default {
           }
         } else {
           // 添加用户
-          const { data: res } = await this.$http.post('users/allUser', formData)
+          formData.name = window.sessionStorage.getItem('username')
+
+          const { data: res } = await this.$http.post('notify/list', formData)
           if (res.code !== '200') {
             this.$message.error('添加失败')
           } else {
@@ -115,6 +124,9 @@ export default {
     },
     close() {
       this.editForm = this.model
+    },
+    getTime(date) {
+      this.editForm.time = date
     }
   }
 }

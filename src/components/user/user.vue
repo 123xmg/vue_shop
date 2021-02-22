@@ -61,20 +61,9 @@
         </el-table-column>
         <el-table-column label="操作" width="180px" align="center">
           <template slot-scope="scope">
-            <el-button
-              type="primary"
-              icon="el-icon-edit"
-              size="mini"
-              @click="EditDialog(scope.row)"
-            >
-            </el-button>
-
-            <el-button
-              type="danger"
-              icon="el-icon-delete"
-              size="mini"
-              @click="deleteBox(scope.row.userId)"
-            ></el-button>
+            <a type="text" @click="EditDialog(scope.row)">编辑</a>
+            <el-divider direction="vertical"></el-divider>
+            <a type="text" @click="deleteBox(scope.row.id)">删除</a>
           </template>
         </el-table-column>
       </el-table>
