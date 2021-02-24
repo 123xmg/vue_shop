@@ -33,10 +33,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="7">
-            <el-form-item label="标 题：">
+            <el-form-item label="发布人：">
               <el-input
                 placeholder="请输入标题"
-                v-model="queryInfo.title"
+                v-model="queryInfo.name"
                 clearable
                 @clear="getList"
               >
@@ -50,15 +50,11 @@
       </el-row>
 
       <!-- 表格区 -->
-      <!-- id: text.u_id,
+      <!-- id: text.s_id,
             name: text.u_name,
-            title: text.u_title,
-            content: text.u_content,
-            time: text.u_time,
-            user: text.u_user, -->
-      <div class="add-btn">
-        <el-button type="primary" @click="handleAdd">添加消息</el-button>
-      </div>
+            title: text.s_title,
+            content: text.s_content,
+            time: text.s_time -->
       <el-table
         :data="infoList"
         border
@@ -67,8 +63,7 @@
       >
         <el-table-column type="index" align="center"> </el-table-column>
 
-        <el-table-column prop="title" label="标题" align="center"> </el-table-column>
-        <el-table-column prop="content" label="内容" align="center">
+        <el-table-column prop="content" label="意见内容" align="center">
           <template slot-scope="scope">
             <div :title="scope.row.content">
               {{
@@ -79,21 +74,14 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="time" label="发送时间" align="center" sortable> </el-table-column>
-        <el-table-column prop="name" label="发送人" align="center"> </el-table-column>
-        <el-table-column prop="user" label="接收人" align="center">
+        <el-table-column prop="time" label="发布时间" align="center" sortable>
           <template slot-scope="scope">
-            <span v-if="scope.row.user == '0'">普通用户</span>
-            <span v-else-if="scope.row.user == '1'">VIP用户</span>
-            <span v-else-if="scope.row.user == '2'">教练</span>
-            <span v-else-if="scope.row.user == '3'">管理员</span>
-            <span v-else>{{ scope.row.user }}</span>
+            {{ scope.row.time | dataFormat }}
           </template>
         </el-table-column>
+        <el-table-column prop="name" label="发布人" align="center"> </el-table-column>
         <el-table-column label="操作" width="180px" align="center">
           <template slot-scope="scope">
-            <a type="text" @click="EditDialog(scope.row)">编辑</a>
-            <el-divider direction="vertical"></el-divider>
             <a type="text" @click="deleteBox(scope.row.id)">删除</a>
           </template>
         </el-table-column>
@@ -112,17 +100,10 @@
         </el-pagination>
       </div>
     </el-card>
-    <!-- 添加、编辑用户的弹框 -->
-    <notifyModal ref="modalForm" @ok="modalFormOk" />
   </div>
 </template>
 <script>
-import notifyModal from './notifyModal'
-
 export default {
-  components: {
-    notifyModal
-  },
   data() {
     return {
       infoList: [],
@@ -139,11 +120,11 @@ export default {
   },
   methods: {
     async getList() {
-      const { data: res } = await this.$http.get('notify/list', { params: this.queryInfo })
+      const { data: res } = await this.$http.get('suggest/list', { params: this.queryInfo })
       if (res.code !== '200') {
         return this.$message.error('数据获取失败!')
       } else {
-        console.log('所有用户的信息', res)
+        console.log('所有的信息', res)
         this.infoList = res.data.list
         this.total = res.data.total
       }
@@ -168,7 +149,7 @@ export default {
       if (confirmresult !== 'confirm') {
         this.$message('已取消删除')
       } else {
-        const { data: res } = await this.$http.delete('notify/list?id=' + id)
+        const { data: res } = await this.$http.delete('suggest/list?id=' + id)
         if (res.code !== '200') {
           return this.$message.error('删除失败')
         } else {
@@ -179,17 +160,6 @@ export default {
           this.getList()
         }
       }
-    },
-    EditDialog(datasource) {
-      this.$refs.modalForm.title = '编辑消息'
-      this.$refs.modalForm.edit(datasource)
-    },
-    handleAdd() {
-      this.$refs.modalForm.title = '添加消息'
-      this.$refs.modalForm.add()
-    },
-    modalFormOk() {
-      this.getList()
     },
     getTime(date) {
       this.queryInfo.time = date

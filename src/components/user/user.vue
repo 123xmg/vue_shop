@@ -36,6 +36,12 @@
       >
         <el-table-column type="index" align="center"> </el-table-column>
 
+        <el-table-column prop="header" label="头像" align="center">
+          <template slot-scope="scope">
+            <!-- {{ scope.row.sex }} -->
+            <div class="block"><el-avatar shape="square" :size="40" :src="scope.row.headerImg"></el-avatar></div>
+          </template>
+        </el-table-column>
         <el-table-column prop="username" label="用户名" align="center"> </el-table-column>
 
         <el-table-column prop="tel" label="手机号" align="center"> </el-table-column>

@@ -17,6 +17,8 @@ import report from '../components/report/report.vue'
 import course from '../components/course/course.vue'
 // 消息通知
 import notify from '../components/notify/notify.vue'
+// 意见管理
+import suggest from '../components/suggest/mySuggest.vue'
 
 Vue.use(VueRouter)
 
@@ -54,6 +56,10 @@ const routes = [
       {
         path: '/message',
         component: notify
+      },
+      {
+        path: '/suggest',
+        component: suggest
       },
       {
         path: '/rights',

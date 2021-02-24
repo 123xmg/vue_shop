@@ -2,11 +2,25 @@
 <template>
   <div>
     <el-dialog :title="title" :visible.sync="editVisible" width="50%" @close="close">
-      <el-form :model="editForm" ref="editUserRef" :rules="editFromrules" label-width="85px">
+      <el-form :model="editForm" ref="editUserRef" :rules="editFromrules" label-width="100px">
+        <el-form-item label="上传头像：" prop="username">
+          <el-upload
+            class="upload-demo"
+            :action="uploadeURL"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :on-success="handleSuccess"
+            :file-list="fileList"
+            list-type="picture"
+            :limit="1"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
+        </el-form-item>
         <el-form-item label="用户名：" prop="username">
           <el-input v-model="editForm.username" placeholder="请输入用户名"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="pwd">
+        <el-form-item label="密码：" prop="pwd">
           <el-input v-model="editForm.pwd" placeholder="请输入密码" type="password"></el-input>
         </el-form-item>
         <el-form-item label="手机号：" prop="tel">
@@ -67,12 +81,25 @@ export default {
       url: {
         add: '',
         edit: ''
-      }
+      },
+      uploadeURL: 'http://127.0.0.1:8081/api/private/v1/upload',
+      fileList: [
+        {
+          name: '营业资格证.jpeg',
+          url: 'blob:http://localhost:8080/92de8c33-5187-458c-9856-642e7365b37f'
+        }
+        // {
+        //   name: 'food2.jpeg',
+        //   url:
+        //     'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        // }
+      ]
     }
   },
 
   methods: {
     add() {
+      this.fileList = []
       this.edit({})
     },
     edit(record) {
@@ -115,6 +142,19 @@ export default {
     },
     close() {
       this.editForm = this.model
+    },
+    handleRemove(file, fileList) {
+      console.log('handleRemove', file, fileList)
+    },
+    handlePreview(file) {
+      console.log('handlePreview', file)
+    },
+    handleSuccess(res, file, fileList) {
+      console.log('////')
+      console.log('res', res)
+      console.log('file', file)
+      console.log('fileList', fileList)
+      this.fileList.url = file.url
     }
   }
 }
