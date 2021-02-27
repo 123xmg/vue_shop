@@ -32,10 +32,6 @@ export default {
       model: {},
       editFromrules: {
         users: [{ required: true, message: '请选择接收人!', trigger: 'blur' }]
-      },
-      url: {
-        add: '',
-        edit: ''
       }
     }
   },
@@ -82,6 +78,7 @@ export default {
         } else {
           // 添加用户
           formData.name = window.sessionStorage.getItem('username')
+          formData.userId = window.sessionStorage.getItem('userId')
           formData.time = moment(new Date()).format('YYYY-MM-DD')
           const { data: res } = await this.$http.post('suggest/list', formData)
           if (res.code !== '200') {

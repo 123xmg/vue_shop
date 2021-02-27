@@ -50,12 +50,6 @@
       </el-row>
 
       <!-- 表格区 -->
-      <!-- id: text.u_id,
-            name: text.u_name,
-            title: text.u_title,
-            content: text.u_content,
-            time: text.u_time,
-            user: text.u_user, -->
       <div class="add-btn">
         <el-button type="primary" @click="handleAdd">添加消息</el-button>
       </div>
@@ -87,6 +81,7 @@
             <span v-else-if="scope.row.user == '1'">VIP用户</span>
             <span v-else-if="scope.row.user == '2'">教练</span>
             <span v-else-if="scope.row.user == '3'">管理员</span>
+            <span v-else-if="scope.row.user == '5'">所有用户</span>
             <span v-else>{{ scope.row.user }}</span>
           </template>
         </el-table-column>
@@ -160,7 +155,7 @@ export default {
     },
     // 删除消息
     async deleteBox(id) {
-      const confirmresult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+      const confirmresult = await this.$confirm('此操作将永久删除该条通知, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

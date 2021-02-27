@@ -100,6 +100,7 @@ export default {
           window.sessionStorage.setItem('tel', res.data.tel)
           window.sessionStorage.setItem('sex', res.data.sex)
           window.sessionStorage.setItem('role', res.data.role)
+          window.sessionStorage.setItem('userId', res.data.userId)
           this.$router.push('/home')
         }
       })

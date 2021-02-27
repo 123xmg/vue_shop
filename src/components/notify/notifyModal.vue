@@ -28,6 +28,7 @@
         <el-form-item label="接收人：" prop="users">
           <!-- <el-input v-model="editForm.user" placeholder="请输入接收人"></el-input> -->
           <el-radio-group v-model="editForm.users">
+            <el-radio :label="5">所有用户</el-radio>
             <el-radio :label="3">管理员</el-radio>
             <el-radio :label="2">教练</el-radio>
             <el-radio :label="1">VIP用户</el-radio>
@@ -35,8 +36,12 @@
             <el-radio :label="4">指定用户</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="接收人：" prop="user" v-show="editForm.users == '4'">
-          <el-input v-model="editForm.user" placeholder="请输入接收人"></el-input>
+        <el-form-item label="接收人：" prop="user" v-if="editForm.users == '4'">
+          <el-input
+            v-model="editForm.user"
+            placeholder="请输入接收人"
+            @click.native="selectModel"
+          ></el-input>
         </el-form-item>
       </el-form>
 
@@ -45,12 +50,17 @@
         <el-button type="primary" @click="editOk">确 定</el-button>
       </span>
     </el-dialog>
+    <JuserModel @change="selectUser" ref="selectmodalForm"></JuserModel>
   </div>
 </template>
 
 <script>
 import moment from 'moment'
+import JuserModel from '../common/JuserModel'
 export default {
+  components: {
+    JuserModel
+  },
   data() {
     return {
       editVisible: false,
@@ -74,7 +84,7 @@ export default {
       })
     },
     edit(record) {
-      if (record.user - 0 < 4) {
+      if (record.user - 0 < 4 || record.user - 0 === 5) {
         record.users = parseInt(record.user)
       } else {
         record.users = 4
@@ -110,7 +120,7 @@ export default {
         } else {
           // 添加用户
           formData.name = window.sessionStorage.getItem('username')
-
+          console.log('编辑用户提交的数据', formData)
           const { data: res } = await this.$http.post('notify/list', formData)
           if (res.code !== '200') {
             this.$message.error('添加失败')
@@ -127,6 +137,14 @@ export default {
     },
     getTime(date) {
       this.editForm.time = date
+    },
+    selectUser(id, name, row) {
+      this.$set(this.editForm, 'userId', id)
+      this.$set(this.editForm, 'user', name)
+    },
+
+    selectModel() {
+      this.$refs.selectmodalForm.editVisible = true
     }
   }
 }

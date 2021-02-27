@@ -18,7 +18,10 @@ import course from '../components/course/course.vue'
 // 消息通知
 import notify from '../components/notify/notify.vue'
 // 意见管理
+// import suggest from '../components/suggest/suggest.vue'
 import suggest from '../components/suggest/mySuggest.vue'
+// 场地管理
+import place from '../components/place/place.vue'
 
 Vue.use(VueRouter)
 
@@ -52,6 +55,10 @@ const routes = [
       {
         path: '/course',
         component: course
+      },
+      {
+        path: '/place',
+        component: place
       },
       {
         path: '/message',

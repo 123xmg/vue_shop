@@ -78,11 +78,11 @@ export default {
         ],
         tel: [{ validator: phonecheckAge, trigger: 'blur' }]
       },
-      url: {
-        add: '',
-        edit: ''
+      // uploadeURL: 'http://127.0.0.1:8081/api/private/v1/upload',
+      uploadeURL: 'http:////127.0.0.1:8081',
+      headersObje: {
+        Authorization: window.sessionStorage.getItem('token')
       },
-      uploadeURL: 'http://127.0.0.1:8081/api/private/v1/upload',
       fileList: [
         {
           name: '营业资格证.jpeg',
