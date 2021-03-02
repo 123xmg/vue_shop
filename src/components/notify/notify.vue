@@ -81,7 +81,6 @@
             <span v-else-if="scope.row.user == '1'">VIP用户</span>
             <span v-else-if="scope.row.user == '2'">教练</span>
             <span v-else-if="scope.row.user == '3'">管理员</span>
-            <span v-else-if="scope.row.user == '5'">所有用户</span>
             <span v-else>{{ scope.row.user }}</span>
           </template>
         </el-table-column>

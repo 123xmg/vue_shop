@@ -36,29 +36,13 @@
       >
         <el-table-column type="index" align="center"> </el-table-column>
 
-        <el-table-column prop="username" label="用户名" align="center"> </el-table-column>
+        <el-table-column prop="username" label="课程名称" align="center"> </el-table-column>
+        <el-table-column prop="username" label="课程类型" align="center"> </el-table-column>
+        <el-table-column label="上课地点" align="center" prop="role"> </el-table-column>
+        <el-table-column prop="tel" label="课程开始时间" align="center" sortable> </el-table-column>
+        <el-table-column label="课程结束时间" align="center" prop="sex" sortable> </el-table-column>
+        <el-table-column label="教练名称" align="center" prop="role"> </el-table-column>
 
-        <el-table-column prop="tel" label="手机号" align="center"> </el-table-column>
-        <el-table-column label="性别" align="center" prop="sex" sortable>
-          <template slot-scope="scope">
-            <span v-if="scope.row.sex == '0'">男</span>
-            <span v-if="scope.row.sex == '1'">女</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="角色" align="center" prop="role" sortable>
-          <template slot-scope="scope">
-            <span v-if="scope.row.role == '0'">普通用户</span>
-            <span v-if="scope.row.role == '1'">VIP用户</span>
-            <span v-if="scope.row.role == '2'">教练</span>
-            <span v-if="scope.row.role == '3'">管理员</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="状态" align="center" prop="state" sortable>
-          <template slot-scope="scope">
-            <el-switch v-model="scope.row.state" @change="userStateChange(scope.row)"> </el-switch>
-          </template>
-        </el-table-column>
         <el-table-column label="操作" width="180px" align="center">
           <template slot-scope="scope">
             <el-button

@@ -84,7 +84,7 @@ export default {
       })
     },
     edit(record) {
-      if (record.user - 0 < 4 || record.user - 0 === 5) {
+      if (record.user - 0 < 4) {
         record.users = parseInt(record.user)
       } else {
         record.users = 4
