@@ -83,6 +83,23 @@
 <script>
 export default {
   components: {},
+  props: {
+    role: {
+      type: Number,
+      required: false
+    }
+  },
+  watch: {
+    role: {
+      // value 需要深度监听及默认先执行handler函数
+      handler(val) {
+        this.queryInfo.role = val
+        this.getUserList()
+      },
+      immediate: true,
+      deep: true
+    }
+  },
   data() {
     return {
       userList: [],
@@ -109,6 +126,7 @@ export default {
     async getUserList() {
       const { data: res } = await this.$http.get('users/allUser', { params: this.queryInfo })
       if (res.code !== '200') {
+        console.log('用户筛选', res.data)
         return this.$message.error('数据获取失败!')
       } else {
         this.userList = res.data.users

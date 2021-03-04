@@ -2,6 +2,7 @@
   <div>
     <!-- 面包屑导航 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
+    <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>消息管理</el-breadcrumb-item>
       <el-breadcrumb-item>消息列表</el-breadcrumb-item>
     </el-breadcrumb>
@@ -137,7 +138,7 @@ export default {
       if (res.code !== '200') {
         return this.$message.error('数据获取失败!')
       } else {
-        console.log('所有用户的信息', res)
+        console.log('所有通知的信息', res)
         this.infoList = res.data.list
         this.total = res.data.total
       }

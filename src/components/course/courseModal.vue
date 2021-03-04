@@ -58,7 +58,7 @@
         <el-button type="primary" @click="editOk">确 定</el-button>
       </span>
     </el-dialog>
-    <JuserModel @change="selectUser" ref="selectmodalForm"></JuserModel>
+    <JuserModel @change="selectUser" ref="selectmodalForm" :role="2"></JuserModel>
   </div>
 </template>
 

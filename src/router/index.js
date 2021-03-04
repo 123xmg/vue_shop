@@ -15,6 +15,8 @@ import order from '../components/order/order.vue'
 import report from '../components/report/report.vue'
 // 课程
 import course from '../components/course/course.vue'
+import teacher from '../components/course/teacher.vue'
+
 // 消息通知
 import notify from '../components/notify/notify.vue'
 // 意见管理
@@ -22,6 +24,7 @@ import notify from '../components/notify/notify.vue'
 import suggest from '../components/suggest/mySuggest.vue'
 // 场地管理
 import place from '../components/place/place.vue'
+import root from '../components/root/root.vue'
 
 Vue.use(VueRouter)
 
@@ -55,6 +58,14 @@ const routes = [
       {
         path: '/course',
         component: course
+      },
+      {
+        path: '/root',
+        component: root
+      },
+      {
+        path: '/courseList',
+        component: teacher
       },
       {
         path: '/place',

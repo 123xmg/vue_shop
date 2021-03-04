@@ -2,6 +2,7 @@
   <div>
     <!-- 面包屑导航 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>用户管理</el-breadcrumb-item>
       <el-breadcrumb-item>用户列表</el-breadcrumb-item>
     </el-breadcrumb>
@@ -39,7 +40,9 @@
         <el-table-column prop="header" label="头像" align="center">
           <template slot-scope="scope">
             <!-- {{ scope.row.sex }} -->
-            <div class="block"><el-avatar shape="square" :size="40" :src="scope.row.headerImg"></el-avatar></div>
+            <div class="block">
+              <el-avatar shape="square" :size="40" :src="scope.row.headerImg"></el-avatar>
+            </div>
           </template>
         </el-table-column>
         <el-table-column prop="username" label="用户名" align="center"> </el-table-column>

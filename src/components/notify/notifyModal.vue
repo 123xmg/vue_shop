@@ -88,7 +88,6 @@ export default {
       } else {
         record.users = 4
       }
-      console.log('bianji', record)
       this.editForm = {}
       this.editForm = Object.assign({}, record)
       this.model = Object.assign({}, record)
