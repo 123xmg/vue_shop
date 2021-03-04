@@ -28,7 +28,6 @@
         <el-form-item label="接收人：" prop="users">
           <!-- <el-input v-model="editForm.user" placeholder="请输入接收人"></el-input> -->
           <el-radio-group v-model="editForm.users">
-            <el-radio :label="5">所有用户</el-radio>
             <el-radio :label="3">管理员</el-radio>
             <el-radio :label="2">教练</el-radio>
             <el-radio :label="1">VIP用户</el-radio>

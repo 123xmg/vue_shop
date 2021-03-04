@@ -10,23 +10,28 @@
 
     <el-card class="box-card">
       <el-row :span="24">
-        <el-col :span="8">
-          <el-input
-            placeholder="请输入用户名"
-            v-model="queryInfo.query"
-            clearable
-            @clear="getUserList"
-          >
-            <el-button icon="el-icon-search" slot="append" @click="getUserList"></el-button>
-          </el-input>
-        </el-col>
-        <el-col :span="4" style="margin-left:10px">
-          <el-button type="primary" @click="handleAdd">添加用户</el-button>
-        </el-col>
+        <el-form label-width="82px" label-position="center">
+          <el-col :span="7">
+            <el-form-item label="课程名称：">
+              <el-input
+                placeholder="请输入课程名称"
+                v-model="queryInfo.title"
+                clearable
+                @clear="getList"
+              >
+              </el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="2" style="margin-left:10px">
+            <el-button type="primary" icon="el-icon-search" @click="getList">查 询</el-button>
+          </el-col>
+        </el-form>
       </el-row>
 
       <!-- 表格区 -->
-
+      <div class="add-btn">
+        <el-button type="primary" @click="handleAdd">添加课程</el-button>
+      </div>
       <el-table
         :data="userList"
         border
@@ -36,12 +41,14 @@
       >
         <el-table-column type="index" align="center"> </el-table-column>
 
-        <el-table-column prop="username" label="课程名称" align="center"> </el-table-column>
-        <el-table-column prop="username" label="课程类型" align="center"> </el-table-column>
-        <el-table-column label="上课地点" align="center" prop="role"> </el-table-column>
-        <el-table-column prop="tel" label="课程开始时间" align="center" sortable> </el-table-column>
-        <el-table-column label="课程结束时间" align="center" prop="sex" sortable> </el-table-column>
-        <el-table-column label="教练名称" align="center" prop="role"> </el-table-column>
+        <el-table-column prop="c_name" label="课程名称" align="center"> </el-table-column>
+        <el-table-column prop="ct_name" label="课程类型" align="center"> </el-table-column>
+        <el-table-column prop="p_name" label="上课地点" align="center"> </el-table-column>
+        <el-table-column prop="c_start_time" label="课程开始时间" align="center" sortable>
+        </el-table-column>
+        <el-table-column prop="c_end_time" label="课程结束时间" align="center" sortable>
+        </el-table-column>
+        <el-table-column prop="u_name" label="教练名称" align="center"> </el-table-column>
 
         <el-table-column label="操作" width="180px" align="center">
           <template slot-scope="scope">
@@ -57,7 +64,7 @@
               type="danger"
               icon="el-icon-delete"
               size="mini"
-              @click="deleteBox(scope.row.userId)"
+              @click="deleteBox(scope.row.c_id)"
             ></el-button>
           </template>
         </el-table-column>
@@ -77,7 +84,7 @@
       </div>
     </el-card>
     <!-- 添加、编辑用户的弹框 -->
-    <courseModal ref="editUser" @ok="modalFormOk" />
+    <courseModal ref="modelFormRef" @ok="modalFormOk" />
   </div>
 </template>
 <script>
@@ -99,43 +106,31 @@ export default {
     }
   },
   created() {
-    this.getUserList()
+    this.getList()
   },
   methods: {
-    async getUserList() {
-      const { data: res } = await this.$http.get('users/allUser', { params: this.queryInfo })
+    async getList() {
+      const { data: res } = await this.$http.get('course/list', { params: this.queryInfo })
       if (res.code !== '200') {
         return this.$message.error('数据获取失败!')
       } else {
-        console.log('所有用户的信息', res)
-        this.userList = res.data.users
+        console.log('所有课程的信息', res)
+        this.userList = res.data.list
         this.total = res.data.total
       }
     },
     // 页码值发生改变
     handleCurrentChange(newPage) {
       this.queryInfo.pagenum = newPage
-      this.getUserList()
+      this.getList()
     },
     // 一页显示的条数发生改变
     handleSizeChange(newSize) {
       this.queryInfo.pagesize = newSize
-      this.getUserList()
-    },
-    // 开关的设置的管理
-    async userStateChange(userInfo) {
-      console.log('该用户所有的信息', userInfo)
-      const { data: res } = await this.$http.put(
-        `users/userStatus?id=${userInfo.userId}&lock=${userInfo.state}`
-      )
-      if (res.code !== '200') {
-        this.getUserList()
-        return this.$message.error('用户状态修改失败')
-      }
-      this.$message.success('用户状态修改成功')
+      this.getList()
     },
     // 删除用户
-    async deleteBox(userId) {
+    async deleteBox(id) {
       const confirmresult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -144,7 +139,7 @@ export default {
       if (confirmresult !== 'confirm') {
         this.$message('已取消删除')
       } else {
-        const { data: res } = await this.$http.delete('users/allUser/?id=' + userId)
+        const { data: res } = await this.$http.delete('course/list?id=' + id)
         if (res.code !== '200') {
           return this.$message.error('删除失败')
         } else {
@@ -152,20 +147,20 @@ export default {
             type: 'success',
             message: '删除成功!'
           })
-          this.getUserList()
+          this.getList()
         }
       }
     },
     EditDialog(datasource) {
-      this.$refs.editUser.title = '编辑用户信息'
-      this.$refs.editUser.edit(datasource)
+      this.$refs.modelFormRef.title = '编辑课程信息'
+      this.$refs.modelFormRef.edit(datasource)
     },
     handleAdd() {
-      this.$refs.editUser.title = '添加用户信息'
-      this.$refs.editUser.add()
+      this.$refs.modelFormRef.title = '添加课程信息'
+      this.$refs.modelFormRef.add()
     },
     modalFormOk() {
-      this.getUserList()
+      this.getList()
     }
   }
 }
