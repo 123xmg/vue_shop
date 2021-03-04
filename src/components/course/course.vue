@@ -1,11 +1,11 @@
 <template>
   <div>
     <!-- 面包屑导航 -->
-    <el-breadcrumb-item separator-class="el-icon-arrow-right">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>课程管理</el-breadcrumb-item>
       <el-breadcrumb-item>课程列表</el-breadcrumb-item>
-    </el-breadcrumb-item>
+    </el-breadcrumb>
 
     <!-- 卡片视图区 -->
 
