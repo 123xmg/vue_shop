@@ -83,13 +83,13 @@ export default {
         119: 'iconfont icon-xiaoxi1',
         120: 'iconfont icon-yijian1'
       },
-      activePath: '/welcome'
+      activePath: '/welcome',
+      queryInfo: {}
     }
   },
   created() {
     this.getMenuList()
     this.activePath = window.sessionStorage.getItem('activePath')
-    console.log('this.activePath', this.activePath)
   },
   methods: {
     // 退出
@@ -114,10 +114,12 @@ export default {
     },
     // 获取菜单列表
     async getMenuList() {
-      const { data: res } = await this.$http.get('users/menu')
+      this.queryInfo.query = window.sessionStorage.getItem('role')
+      const { data: res } = await this.$http.get('users/menu', { params: this.queryInfo })
       if (res.code !== '200') {
         return this.$message.error(res.msg)
       } else {
+        console.log('菜单栏信息', res.msg)
         this.menuList = res.msg
       }
     },
@@ -210,6 +212,6 @@ export default {
 }
 .test {
   border: transparent !important;
-  box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1) inset !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1) inset !important;
 }
 </style>
