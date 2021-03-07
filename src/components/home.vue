@@ -6,8 +6,8 @@
         <img src="../assets/logo.png" alt="xiaojingyu" title="小鲸鱼" />
         <span>小鲸鱼健身房管理系统</span>
       </div>
-      <!--  -->
-      <div class="msg">
+      <!-- 消息通知  -->
+      <!-- <div class="msg">
         <el-tooltip placement="bottom" effect="light" popper-class="test">
           <div class="icon-message">
             <i class="iconfont icon-xiaoxi"></i>
@@ -17,7 +17,7 @@
             <notifyMsg></notifyMsg>
           </div>
         </el-tooltip>
-      </div>
+      </div> -->
       <div class="off_login" @click="handleLogout">
         <i class="el-icon-switch-button" style="margin-right: 5px;"></i>
         <span>退出登录</span>
@@ -64,11 +64,11 @@
   </el-container>
 </template>
 <script>
-import notifyMsg from './notify/notifyMsg.vue'
+// import notifyMsg from './notify/notifyMsg.vue'
 
 export default {
   components: {
-    notifyMsg
+    // notifyMsg
   },
   data() {
     return {

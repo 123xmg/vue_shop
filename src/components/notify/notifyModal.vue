@@ -31,7 +31,6 @@
             <el-radio :label="3">管理员</el-radio>
             <el-radio :label="2">教练</el-radio>
             <el-radio :label="1">VIP用户</el-radio>
-            <el-radio :label="0">普通用户</el-radio>
             <el-radio :label="4">指定用户</el-radio>
           </el-radio-group>
         </el-form-item>

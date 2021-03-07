@@ -25,13 +25,25 @@
             <el-tag type="danger" v-if="scope.row.m_uid === 1">VIP用户</el-tag>
           </template>
         </el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <a type="text" @click="EditDialog(scope.row)">修改</a>
+          </template>
+        </el-table-column>
       </el-table>
     </el-card>
+
+    <!-- 添加、编辑用户的弹框 -->
+    <rootModel ref="formRefModel" @ok="modalFormOk" />
   </div>
 </template>
-
 <script>
+import rootModel from './rootModel'
+
 export default {
+  components: {
+    rootModel
+  },
   data() {
     return {
       menuList: []
@@ -43,6 +55,7 @@ export default {
   methods: {
     async getList() {
       const { data: res } = await this.$http.get('users/menuList')
+      console.log('菜单权限', res)
       if (res.code !== '200') {
         return this.$message.error(res.msg)
       } else {
@@ -53,9 +66,15 @@ export default {
             list.push(element)
           }
         })
-        console.log('dhfuerfh324', list)
         this.menuList = list
       }
+    },
+    EditDialog(datasource) {
+      this.$refs.formRefModel.title = '修改菜单权限'
+      this.$refs.formRefModel.edit(datasource)
+    },
+    modalFormOk() {
+      this.getList()
     }
   }
 }

@@ -1,18 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
+// 注册
 import Register from '../components/Register.vue'
+// 忘记密码
+import alert from '../components/alertPwd.vue'
 import Home from '../components/home.vue'
 import welcome from '../components/index/Analysis.vue'
 import user from '../components/user/user.vue'
-import rights from '../components/rights/rights.vue'
-import roles from '../components/rights/roles.vue'
-import cate from '../components/goods/cate.vue'
-import params from '../components/goods/params.vue'
-import list from '../components/goods/list.vue'
-import add from '../components/goods/add.vue'
-import order from '../components/order/order.vue'
-import report from '../components/report/report.vue'
+import myInfo from '../components/user/myInfo.vue'
 // 课程
 import course from '../components/course/course.vue'
 import teacher from '../components/course/teacher.vue'
@@ -20,8 +16,8 @@ import teacher from '../components/course/teacher.vue'
 // 消息通知
 import notify from '../components/notify/notify.vue'
 // 意见管理
-// import suggest from '../components/suggest/suggest.vue'
-import suggest from '../components/suggest/mySuggest.vue'
+import mySuggest from '../components/suggest/mySuggest.vue'
+import suggest from '../components/suggest/suggest.vue'
 // 场地管理
 import place from '../components/place/place.vue'
 import root from '../components/root/root.vue'
@@ -36,6 +32,11 @@ const routes = [
   {
     path: '/login',
     component: Login
+  },
+  {
+    path: '/alertPssWord',
+    name: 'alertPssWord',
+    component: alert
   },
   {
     path: '/register',
@@ -80,37 +81,12 @@ const routes = [
         component: suggest
       },
       {
-        path: '/rights',
-        component: rights
+        path: '/mySuggest',
+        component: mySuggest
       },
       {
-        path: '/roles',
-        component: roles
-      },
-      {
-        path: '/categories',
-        component: cate
-      },
-
-      {
-        path: '/params',
-        component: params
-      },
-      {
-        path: '/goods',
-        component: list
-      },
-      {
-        path: '/goods/add',
-        component: add
-      },
-      {
-        path: '/orders',
-        component: order
-      },
-      {
-        path: '/reports',
-        component: report
+        path: '/myInfo',
+        component: myInfo
       }
     ]
   }
@@ -123,7 +99,7 @@ const router = new VueRouter({
 // 挂载路由导航守卫
 router.beforeEach((to, from, next) => {
   // to 到哪里去，from从哪里来，next放行
-  if (to.path === '/login' || to.path === '/register') {
+  if (to.path === '/login' || to.path === '/register' || to.path === '/alertPssWord') {
     return next()
   } else {
     if (!window.sessionStorage.getItem('token')) {

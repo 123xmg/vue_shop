@@ -18,7 +18,7 @@ export default {
           trigger: 'axis'
         },
         legend: {
-          data: ['普通用户', 'VIP用户', '教练', '管理员']
+          data: ['VIP用户', '教练', '管理员']
         },
         grid: {
           left: '3%',
@@ -40,14 +40,6 @@ export default {
           type: 'value'
         },
         series: [
-          {
-            name: '普通用户',
-            type: 'line',
-            stack: '总量',
-            areaStyle: {},
-            data: [150, 232, 201, 154, 190, 330],
-            smooth: true
-          },
           {
             name: 'VIP用户',
             type: 'line',

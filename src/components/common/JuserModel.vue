@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :title="title" :visible.sync="editVisible" width="40%" @close="close">
+    <el-dialog :title="title" :visible.sync="editVisible" width="55%" @close="close">
       <el-row :span="24">
         <el-col :span="8">
           <el-input
@@ -47,7 +47,6 @@
         </el-table-column>
         <el-table-column label="角色" align="center" prop="role" sortable>
           <template slot-scope="scope">
-            <span v-if="scope.row.role == '0'">普通用户</span>
             <span v-if="scope.row.role == '1'">VIP用户</span>
             <span v-if="scope.row.role == '2'">教练</span>
             <span v-if="scope.row.role == '3'">管理员</span>

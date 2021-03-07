@@ -34,9 +34,7 @@ export default {
   mounted() {
     let role = ''
     const sessionRole = window.sessionStorage.getItem('role')
-    if (sessionRole === '0') {
-      role = '普通用户'
-    }
+
     if (sessionRole === '1') {
       role = 'vip用户'
     }

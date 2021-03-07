@@ -56,7 +56,6 @@
         </el-table-column>
         <el-table-column label="角色" align="center" prop="role" sortable>
           <template slot-scope="scope">
-            <span v-if="scope.row.role == '0'">普通用户</span>
             <span v-if="scope.row.role == '1'">VIP用户</span>
             <span v-if="scope.row.role == '2'">教练</span>
             <span v-if="scope.row.role == '3'">管理员</span>
@@ -72,7 +71,7 @@
           <template slot-scope="scope">
             <a type="text" @click="EditDialog(scope.row)">编辑</a>
             <el-divider direction="vertical"></el-divider>
-            <a type="text" @click="deleteBox(scope.row.id)">删除</a>
+            <a type="text" @click="deleteBox(scope.row.userId)">删除</a>
           </template>
         </el-table-column>
       </el-table>
@@ -113,10 +112,13 @@ export default {
     }
   },
   created() {
-    this.getUserList()
+    this.getUserList(1)
   },
   methods: {
-    async getUserList() {
+    async getUserList(age) {
+      if (age) {
+        this.queryInfo.pagenum = 1
+      }
       const { data: res } = await this.$http.get('users/allUser', { params: this.queryInfo })
       if (res.code !== '200') {
         return this.$message.error('数据获取失败!')
@@ -166,7 +168,7 @@ export default {
             type: 'success',
             message: '删除成功!'
           })
-          this.getUserList()
+          this.getUserList(1)
         }
       }
     },

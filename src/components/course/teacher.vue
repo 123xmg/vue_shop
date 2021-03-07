@@ -13,7 +13,7 @@
         <div class="team-member" v-for="(item, i) in itemOnce" :key="i">
           <!-- 蒙板 -->
           <div class="profile-image">
-            <img src="../../assets/teacher/1.jpg" alt="" />
+            <img src="../../assets/teacher/3.jpg" alt="" />
             <div class="profile-info">
               <h4 class="name">姓名：{{ item.u_name }}</h4>
               <p class="position">

@@ -2,7 +2,7 @@
   <div>
     <!-- 面包屑导航 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
-    <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>场地管理</el-breadcrumb-item>
       <el-breadcrumb-item>场地列表</el-breadcrumb-item>
     </el-breadcrumb>
@@ -31,7 +31,7 @@
 
       <!-- 表格区 -->
       <div class="add-btn">
-        <el-button type="primary" @click="handleAdd">添加消息</el-button>
+        <el-button type="primary" @click="handleAdd">新增场地</el-button>
       </div>
       <el-table
         :data="infoList"
@@ -45,12 +45,7 @@
 
         <el-table-column prop="username" label="场地管理人" align="center" sortable>
         </el-table-column>
-        <el-table-column label="场地使用状态" align="center" prop="state" sortable>
-          <template slot-scope="scope">
-            <span v-if="scope.row.state == '0'">空闲</span>
-            <span v-if="scope.row.state == '1'">正在使用中</span>
-          </template>
-        </el-table-column>
+
         <el-table-column label="操作" width="180px" align="center">
           <template slot-scope="scope">
             <a type="text" @click="EditDialog(scope.row)">编辑</a>
@@ -96,10 +91,13 @@ export default {
     }
   },
   created() {
-    this.getList()
+    this.getList(1)
   },
   methods: {
-    async getList() {
+    async getList(age) {
+      if (age) {
+        this.queryInfo.pagenum = 1
+      }
       const { data: res } = await this.$http.get('place/list', { params: this.queryInfo })
       if (res.code !== '200') {
         return this.$message.error('数据获取失败!')
@@ -137,7 +135,7 @@ export default {
             type: 'success',
             message: '删除成功!'
           })
-          this.getList()
+          this.getList(1)
         }
       }
     },

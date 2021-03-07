@@ -116,10 +116,13 @@ export default {
     }
   },
   created() {
-    this.getList()
+    this.getList(1)
   },
   methods: {
-    async getList() {
+    async getList(age) {
+      if (age) {
+        this.queryInfo.pagenum = 1
+      }
       const { data: res } = await this.$http.get('suggest/list', { params: this.queryInfo })
       if (res.code !== '200') {
         return this.$message.error('数据获取失败!')
@@ -157,7 +160,7 @@ export default {
             type: 'success',
             message: '删除成功!'
           })
-          this.getList()
+          this.getList(1)
         }
       }
     },

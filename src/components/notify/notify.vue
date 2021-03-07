@@ -2,7 +2,7 @@
   <div>
     <!-- 面包屑导航 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
-    <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>消息管理</el-breadcrumb-item>
       <el-breadcrumb-item>消息列表</el-breadcrumb-item>
     </el-breadcrumb>
@@ -78,8 +78,7 @@
         <el-table-column prop="name" label="发送人" align="center"> </el-table-column>
         <el-table-column prop="user" label="接收人" align="center">
           <template slot-scope="scope">
-            <span v-if="scope.row.user == '0'">普通用户</span>
-            <span v-else-if="scope.row.user == '1'">VIP用户</span>
+            <span v-if="scope.row.user == '1'">VIP用户</span>
             <span v-else-if="scope.row.user == '2'">教练</span>
             <span v-else-if="scope.row.user == '3'">管理员</span>
             <span v-else>{{ scope.row.user }}</span>
@@ -125,15 +124,20 @@ export default {
       queryInfo: {
         query: '',
         pagenum: 1,
-        pagesize: 4
+        pagesize: 4,
+        n_user_id: window.sessionStorage.getItem('userId'),
+        n_user_role: window.sessionStorage.getItem('role')
       }
     }
   },
   created() {
-    this.getList()
+    this.getList(1)
   },
   methods: {
-    async getList() {
+    async getList(age) {
+      if (age) {
+        this.queryInfo.pagenum = 1
+      }
       const { data: res } = await this.$http.get('notify/list', { params: this.queryInfo })
       if (res.code !== '200') {
         return this.$message.error('数据获取失败!')
@@ -171,7 +175,7 @@ export default {
             type: 'success',
             message: '删除成功!'
           })
-          this.getList()
+          this.getList(1)
         }
       }
     },

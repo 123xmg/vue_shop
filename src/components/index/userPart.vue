@@ -52,7 +52,6 @@ export default {
               show: false
             },
             data: [
-              { value: 65, name: '普通用户' },
               { value: 25, name: 'VIP用户' },
               { value: 8, name: '教练' },
               { value: 2, name: '管理员' }

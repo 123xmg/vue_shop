@@ -3,7 +3,7 @@
   <div>
     <el-dialog :title="title" :visible.sync="editVisible" width="50%" @close="close">
       <el-form :model="editForm" ref="editUserRef" :rules="editFromrules" label-width="100px">
-        <el-form-item label="上传头像：" prop="username">
+        <el-form-item label="上传头像：">
           <el-upload
             class="upload-demo"
             :action="uploadeURL"
@@ -34,7 +34,6 @@
         </el-form-item>
         <el-form-item label="角色：" prop="role">
           <el-select v-model="editForm.role" placeholder="请选择用户角色" style="width:100%">
-            <el-option label="普通用户" :value="0"></el-option>
             <el-option label="VIP用户" :value="1"></el-option>
             <el-option label="教练" :value="2"></el-option>
             <el-option label="管理员" :value="3"></el-option>

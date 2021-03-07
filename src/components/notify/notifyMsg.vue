@@ -4,7 +4,7 @@
       <ul class="nav">
         <li style="padding-top:0">
           <p class="nav-title">
-            <el-tag type="danger" size="mini">NEW</el-tag>欢迎您,您已成为大会员,快来查看会员优惠
+            <el-tag type="danger" size="mini">NEW</el-tag>欢迎用户登录小鲸鱼健身房管理系统！
           </p>
           <p class="nav-time">2021-1-21 12:25</p>
         </li>
