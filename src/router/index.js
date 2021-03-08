@@ -12,6 +12,8 @@ import myInfo from '../components/user/myInfo.vue'
 // 课程
 import course from '../components/course/course.vue'
 import teacher from '../components/course/teacher.vue'
+import myTeather from '../components/course/myTeacher.vue'
+import myStudent from '../components/course/myStudent.vue'
 
 // 消息通知
 import notify from '../components/notify/notify.vue'
@@ -61,12 +63,20 @@ const routes = [
         component: course
       },
       {
+        path: '/myStudent',
+        component: myStudent
+      },
+      {
         path: '/root',
         component: root
       },
       {
         path: '/courseList',
         component: teacher
+      },
+      {
+        path: '/myTeather',
+        component: myTeather
       },
       {
         path: '/place',

@@ -91,7 +91,6 @@ export default {
   height: 110px;
   margin-top: 15px;
   margin-right: 15px;
-  background-color: pink;
   border-radius: 50%;
   overflow: hidden;
   img {
@@ -118,6 +117,5 @@ export default {
 }
 .female {
   font-weight: 700;
-  color: pink;
 }
 </style>
