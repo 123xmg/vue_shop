@@ -7,9 +7,8 @@
           <el-upload
             class="upload-demo"
             :action="uploadeURL"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :on-success="handleSuccess"
+            :on-success="uploadSuccess"
+            :before-upload="uploadBefore"
             :file-list="fileList"
             list-type="picture"
             :limit="1"
@@ -77,25 +76,16 @@ export default {
         ],
         tel: [{ validator: phonecheckAge, trigger: 'blur' }]
       },
-      // uploadeURL: 'http://127.0.0.1:8081/api/private/v1/upload',
-      uploadeURL: 'http:////127.0.0.1:8081',
-      headersObje: {
-        Authorization: window.sessionStorage.getItem('token')
-      },
+      uploadeURL: window._CONFIG.uploade + '/users/upload',
+      imgUrl: '',
       fileList: [
         {
           name: '营业资格证.jpeg',
           url: 'blob:http://localhost:8080/92de8c33-5187-458c-9856-642e7365b37f'
         }
-        // {
-        //   name: 'food2.jpeg',
-        //   url:
-        //     'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-        // }
       ]
     }
   },
-
   methods: {
     add() {
       this.fileList = []
@@ -145,15 +135,20 @@ export default {
     handleRemove(file, fileList) {
       console.log('handleRemove', file, fileList)
     },
-    handlePreview(file) {
-      console.log('handlePreview', file)
+    // 图片上传成功
+    uploadSuccess(res, file) {
+      console.log('图片上传成功', file)
+      this.imgUrl = URL.createObjectURL(file.raw)
+      console.log('abc', this.imgUrl)
     },
-    handleSuccess(res, file, fileList) {
-      console.log('////')
-      console.log('res', res)
-      console.log('file', file)
-      console.log('fileList', fileList)
-      this.fileList.url = file.url
+    // 图片上传之前
+    uploadBefore(file) {
+      console.log(file)
+      const limitMax = 5000 * 1024
+      if (file.size > limitMax) {
+        this.$message.error('大小超出限制!')
+        return false
+      }
     }
   }
 }

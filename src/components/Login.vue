@@ -60,14 +60,17 @@
 </template>
 <script>
 import { GVerify } from '../../static/js/vertifyCode'
+import crypto from 'crypto'
 export default {
   data() {
     return {
       loginForm: {
         // 管理员账号
-        // tel: '17852756592',
+        tel: '13525019622',
         // vIp账号
-        tel: '15265653622',
+        // tel: '15265653622',
+        // vIp账号
+        // tel: '17852756596',
         pwd: '123456',
         verifyCode: ''
       },
@@ -110,6 +113,11 @@ export default {
           return
         }
         const formData = Object.assign(this.model, this.loginForm)
+        formData.pwd = crypto
+          .createHash('md5')
+          .update(String(formData.pwd))
+          .digest('hex')
+        console.log('提交的数据', formData)
         const { data: res } = await this.$http.post('users/userLogin', formData)
         console.log('返回的数据', res)
         if (res.code !== '200') {
