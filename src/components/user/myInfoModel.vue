@@ -97,7 +97,6 @@ export default {
           return
         }
         const formData = Object.assign({}, this.editForm)
-        console.log(this.fileName, this.fileUrl)
         formData.u_imgname = this.fileName
         formData.u_imgurl = this.fileUrl
         if (this.editForm.userId) {

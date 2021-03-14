@@ -11,7 +11,6 @@
             :before-upload="uploadBefore"
             :file-list="fileList"
             list-type="picture"
-            :limit="1"
           >
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
@@ -93,6 +92,14 @@ export default {
       this.editForm = Object.assign({}, record)
       this.model = Object.assign({}, record)
       this.editVisible = true
+      if (this.editForm.u_imgurl) {
+        this.fileList = [
+          {
+            name: this.editForm.u_imgname,
+            url: this.editForm.u_imgurl
+          }
+        ]
+      }
     },
     editOk() {
       this.$refs.editUserRef.validate(async valid => {
@@ -100,6 +107,8 @@ export default {
           return
         }
         const formData = Object.assign({}, this.editForm)
+        formData.u_imgname = this.fileName
+        formData.u_imgurl = this.fileUrl
         if (this.editForm.userId) {
           // 编辑用户
           const { data: res } = await this.$http.put('users/allUser', formData)
@@ -132,12 +141,14 @@ export default {
     },
     // 图片上传成功
     uploadSuccess(res, file) {
-      console.log('图片上传成功', file)
-      this.fileList.push({
-        name: file.name,
-        url: file.url
-      })
-      console.log('abc', this.imgUrl)
+      this.fileList = [
+        {
+          name: file.name,
+          url: file.url
+        }
+      ]
+      this.fileName = file.response.fileList.fileName
+      this.fileUrl = file.response.fileList.fileUrl
     },
     // 图片上传之前
     uploadBefore(file) {

@@ -41,7 +41,18 @@
           <template slot-scope="scope">
             <!-- {{ scope.row.sex }} -->
             <div class="block">
-              <el-avatar shape="square" :size="40" :src="scope.row.headerImg"></el-avatar>
+              <el-avatar
+                shape="square"
+                :size="40"
+                v-if="scope.row.u_imgurl"
+                :src="uploadeURL + scope.row.u_imgurl"
+              ></el-avatar>
+              <el-avatar
+                shape="square"
+                :size="40"
+                v-else
+                src="https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png"
+              ></el-avatar>
             </div>
           </template>
         </el-table-column>
@@ -103,7 +114,9 @@ export default {
   data() {
     return {
       userList: [],
+      imgUrl: '',
       total: 0,
+      uploadeURL: window._CONFIG.uploade,
       queryInfo: {
         query: '',
         pagenum: 1,

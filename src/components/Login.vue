@@ -66,11 +66,11 @@ export default {
     return {
       loginForm: {
         // 管理员账号
-        tel: '15265653622',
+        tel: '17852756592',
         // vIp账号
         // tel: '15265653622',
-        // vIp账号
-        // tel: '17852756596',
+        // 教练
+        // tel: '15265653622',
         pwd: '123456',
         verifyCode: ''
       },

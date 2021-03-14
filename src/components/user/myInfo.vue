@@ -13,7 +13,7 @@
           <p class="my_detail">状态：{{ userList.u_lock == 0 ? '正常' : '禁用' }}</p>
         </div>
         <div class="header_img">
-          <img v-if="imgUrl" :src="imgUrl" alt="" />
+          <img v-if="userList.u_imgurl" :src="uploadeURL + userList.u_imgurl" alt="" />
           <img v-else src="../../assets/img/shouye/user.png" alt="" />
         </div>
         <div class="my_edit">
@@ -36,6 +36,7 @@ export default {
   data() {
     return {
       userList: {},
+      uploadeURL: window._CONFIG.uploade,
       imgUrl: '',
       total: 0,
       queryInfo: {
@@ -54,7 +55,6 @@ export default {
       } else {
         console.log('本用户的信息', res)
         this.userList = res.data.users
-        this.imgUrl = window._CONFIG.uploade + this.userList.u_imgurl
         if (this.userList.u_role === 1) {
           this.userList.role = 'VIP用户'
         }
