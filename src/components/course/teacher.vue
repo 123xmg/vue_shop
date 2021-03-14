@@ -19,14 +19,15 @@
               <p class="position">
                 简介：{{
                   item.s_content
-                    ? item.s_content.length > 10
-                      ? item.s_content.substr(0, 10)
+                    ? item.s_content.length > 12
+                      ? item.s_content.substr(0, 12) + '...'
                       : item.s_content
                     : ' '
-                }}<span class="stail">查看详情</span>
+                }}
               </p>
+
               <p class="position">价格：{{ item.s_price }}/节</p>
-              <div class="profile-edit"><i class="el-icon-edit"></i>编辑</div>
+              <div class="profile-edit">查看详情</div>
             </div>
             <el-button style="width: 100%; margin-top: 8px" size="small">立即购买</el-button>
           </div>

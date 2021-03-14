@@ -13,7 +13,8 @@
           <p class="my_detail">状态：{{ userList.u_lock == 0 ? '正常' : '禁用' }}</p>
         </div>
         <div class="header_img">
-          <img src="../../assets/img/shouye/user.png" alt="" />
+          <img v-if="imgUrl" :src="imgUrl" alt="" />
+          <img v-else src="../../assets/img/shouye/user.png" alt="" />
         </div>
         <div class="my_edit">
           <el-button type="primary" @click="EditDialog(userList)">编 辑</el-button>
@@ -22,19 +23,20 @@
     </div>
 
     <!-- 添加、编辑用户的弹框 -->
-    <editUser ref="editUser" @ok="modalFormOk" />
+    <myInfoModel ref="editUser" @ok="modalFormOk" />
   </div>
 </template>
 <script>
-import editUser from './editUser'
+import myInfoModel from './myInfoModel'
 
 export default {
   components: {
-    editUser
+    myInfoModel
   },
   data() {
     return {
       userList: {},
+      imgUrl: '',
       total: 0,
       queryInfo: {
         query: window.sessionStorage.getItem('userId')
@@ -52,6 +54,7 @@ export default {
       } else {
         console.log('本用户的信息', res)
         this.userList = res.data.users
+        this.imgUrl = window._CONFIG.uploade + this.userList.u_imgurl
         if (this.userList.u_role === 1) {
           this.userList.role = 'VIP用户'
         }
@@ -64,8 +67,18 @@ export default {
       }
     },
     EditDialog(datasource) {
+      const editData = {
+        userId: datasource.u_id,
+        username: datasource.u_name,
+        pwd: datasource.u_pwd,
+        role: datasource.u_role,
+        tel: datasource.u_tel,
+        sex: datasource.u_sex,
+        u_imgname: datasource.u_imgname,
+        u_imgurl: this.imgUrl
+      }
       this.$refs.editUser.title = '编辑用户信息'
-      this.$refs.editUser.edit(datasource)
+      this.$refs.editUser.edit(editData)
     },
     modalFormOk() {
       this.getUserList()

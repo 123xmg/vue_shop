@@ -105,8 +105,9 @@ export default {
     margin-bottom: 10px;
   }
   .username {
-    margin-top: 20px;
-    font-size: 18px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-size: 22px;
     font-weight: 700;
     color: #333333;
   }

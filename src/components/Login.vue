@@ -43,13 +43,13 @@
             <router-link
               :to="{ name: 'alertPssWord' }"
               class="forge-password"
-              style="float: right;color:#f6f6f6;"
+              style="float: right;color:#f6f6f6;cursor: pointer;"
               >忘记密码</router-link
             >
             <router-link
               :to="{ name: 'register' }"
               class="forge-password"
-              style="float: right;margin-right: 10px;color:#0899d5;"
+              style="float: right;margin-right: 10px;color:#0899d5;cursor: pointer;"
               >注册账户</router-link
             >
           </el-form-item>
@@ -66,7 +66,7 @@ export default {
     return {
       loginForm: {
         // 管理员账号
-        tel: '13525019622',
+        tel: '15265653622',
         // vIp账号
         // tel: '15265653622',
         // vIp账号

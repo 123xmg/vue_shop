@@ -11,7 +11,6 @@
             :before-upload="uploadBefore"
             :file-list="fileList"
             list-type="picture"
-            :limit="1"
           >
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
@@ -30,13 +29,6 @@
             <el-radio :label="0">男</el-radio>
             <el-radio :label="1">女</el-radio>
           </el-radio-group>
-        </el-form-item>
-        <el-form-item label="角色：" prop="role">
-          <el-select v-model="editForm.role" placeholder="请选择用户角色" style="width:100%">
-            <el-option label="VIP用户" :value="1"></el-option>
-            <el-option label="教练" :value="2"></el-option>
-            <el-option label="管理员" :value="3"></el-option>
-          </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -65,15 +57,14 @@ export default {
       title: '添加用户',
       editForm: {},
       model: {},
+      fileName: '',
+      fileUrl: '',
       editFromrules: {
         username: [
           { required: true, message: '请输入用户名!', trigger: 'blur' },
           { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
         ],
-        pwd: [
-          { required: true, message: '请输入密码!', trigger: 'blur' },
-          { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
-        ],
+        pwd: [{ required: true, message: '请输入密码!', trigger: 'blur' }],
         tel: [{ validator: phonecheckAge, trigger: 'blur' }]
       },
       uploadeURL: window._CONFIG.uploade + '/users/upload',
@@ -88,11 +79,17 @@ export default {
     },
     edit(record) {
       console.log('编辑', record)
-      record.role = parseInt(record.role) || record.role
-      this.editForm = {}
+      record.roorm = {}
+      this.editFle = parseInt(record.role) || record.role
       this.editForm = Object.assign({}, record)
       this.model = Object.assign({}, record)
       this.editVisible = true
+      this.fileList = [
+        {
+          name: this.editForm.u_imgname,
+          url: this.editForm.u_imgurl
+        }
+      ]
     },
     editOk() {
       this.$refs.editUserRef.validate(async valid => {
@@ -100,8 +97,12 @@ export default {
           return
         }
         const formData = Object.assign({}, this.editForm)
+        console.log(this.fileName, this.fileUrl)
+        formData.u_imgname = this.fileName
+        formData.u_imgurl = this.fileUrl
         if (this.editForm.userId) {
           // 编辑用户
+          console.log('编辑提交的信息', formData)
           const { data: res } = await this.$http.put('users/allUser', formData)
           if (res.code !== '200') {
             this.$message.error('修改失败')
@@ -127,21 +128,19 @@ export default {
     close() {
       this.editForm = this.model
     },
-    handleRemove(file, fileList) {
-      console.log('handleRemove', file, fileList)
-    },
     // 图片上传成功
     uploadSuccess(res, file) {
-      console.log('图片上传成功', file)
-      this.fileList.push({
-        name: file.name,
-        url: file.url
-      })
-      console.log('abc', this.imgUrl)
+      this.fileList = [
+        {
+          name: file.name,
+          url: file.url
+        }
+      ]
+      this.fileName = file.response.fileList.fileName
+      this.fileUrl = file.response.fileList.fileUrl
     },
     // 图片上传之前
     uploadBefore(file) {
-      console.log(file)
       const limitMax = 5000 * 1024
       if (file.size > limitMax) {
         this.$message.error('大小超出限制!')

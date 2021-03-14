@@ -86,12 +86,11 @@ export default {
         const { data: res } = await this.$http.put('users/alert', formData)
         console.log('返回的数据', res)
         if (res.code !== '200') {
-          this.loginForm.verifyCode = ''
-          this.verifyCode.refresh()
-          return this.$notify.error({
+          this.$notify.error({
             title: '系统提示',
             message: res.msg
           })
+          this.$router.push('/alertPssWord')
         } else {
           this.$notify({
             title: '系统提示',
