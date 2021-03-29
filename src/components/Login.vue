@@ -70,7 +70,7 @@ export default {
         // vIp账号
         // tel: '15265653622',
         // 教练
-        // tel: '15265653622',
+        // tel: '17852756590',
         pwd: '123456',
         verifyCode: ''
       },
@@ -78,11 +78,11 @@ export default {
       loginFormRules: {
         tel: [
           { required: true, message: '请输入手机号', trigger: 'change' },
-          { min: 11, max: 11, message: '输入的长度为11', trigger: 'blur' }
+          { min: 11, max: 11, message: '手机号格式错误', trigger: 'blur' }
         ],
         pwd: [
           { required: true, message: '请输入登录密码', trigger: 'change' },
-          { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
+          { min: 6, max: 15, message: '密码长度在 6 到 15 个字符', trigger: 'blur' }
         ],
         verifyCode: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
       }

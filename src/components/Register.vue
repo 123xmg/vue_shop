@@ -75,8 +75,8 @@ export default {
 <style lang="less" scoped>
 .login_container {
   // background: #2b4b6b;
-  background: url(../assets/img/login/logo.png) no-repeat left center;
-  background-size: 100% 100%;
+  background: url(../assets/img/login/logo.png) no-repeat center center;
+  background-size: 100%;
   height: 100%;
 }
 .info_syt {
@@ -115,11 +115,5 @@ export default {
 }
 .loginInput {
   width: calc(100% - 125px);
-}
-.yamImg {
-  display: inline-block;
-  height: 40px;
-  margin-left: 5px;
-  vertical-align: middle;
 }
 </style>

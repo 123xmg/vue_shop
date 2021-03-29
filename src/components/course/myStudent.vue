@@ -4,7 +4,7 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>课程管理</el-breadcrumb-item>
-      <el-breadcrumb-item>我的学员</el-breadcrumb-item>
+      <el-breadcrumb-item>我的教练</el-breadcrumb-item>
     </el-breadcrumb>
 
     <!-- 卡片视图区 -->
@@ -30,9 +30,6 @@
       </el-row>
 
       <!-- 表格区 -->
-      <div class="add-btn">
-        <el-button type="primary" @click="handleAdd">添加消息</el-button>
-      </div>
       <el-table
         :data="infoList"
         border
@@ -41,10 +38,10 @@
       >
         <el-table-column type="index" align="center"> </el-table-column>
 
-        <el-table-column prop="title" label="教练名称" align="center"> </el-table-column>
-        <el-table-column prop="time" label="教练手机号" align="center" sortable> </el-table-column>
-        <el-table-column prop="name" label="价格(/节)" align="center"> </el-table-column>
-        <el-table-column prop="user" label="购买课节数" align="center"> </el-table-column>
+        <el-table-column prop="u_name" label="学员名称" align="center"> </el-table-column>
+        <el-table-column prop="u_tel" label="学员手机号" align="center"> </el-table-column>
+
+        <el-table-column prop="m_num" label="购买课节数" align="center"> </el-table-column>
       </el-table>
       <!-- 分页区域 -->
       <div class="block">
@@ -76,19 +73,17 @@ export default {
     }
   },
   created() {
-    this.getList(1)
+    this.getList()
   },
   methods: {
-    async getList(age) {
-      if (age) {
-        this.queryInfo.pagenum = 1
-      }
-      const { data: res } = await this.$http.get('notify/list', { params: this.queryInfo })
+    async getList() {
+      console.log('简练id', this.queryInfo.query)
+      const { data: res } = await this.$http.get('teacher/stuList', { params: this.queryInfo })
       if (res.code !== '200') {
         return this.$message.error('数据获取失败!')
       } else {
-        console.log('所有通知的信息', res)
-        this.infoList = res.data.list
+        console.log('所有学员的信息', res)
+        this.infoList = res.data.users
         this.total = res.data.total
       }
     },

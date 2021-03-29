@@ -77,7 +77,6 @@ export default {
   },
   methods: {
     async getList() {
-      console.log('dfkjhdskfhks', window.sessionStorage.getItem('userId'))
       const { data: res } = await this.$http.get('teacher/teaList', { params: this.queryInfo })
       if (res.code !== '200') {
         return this.$message.error('数据获取失败!')
