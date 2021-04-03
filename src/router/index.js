@@ -7,8 +7,10 @@ import Register from '../components/Register.vue'
 import alert from '../components/alertPwd.vue'
 import Home from '../components/home.vue'
 import welcome from '../components/index/Analysis.vue'
+// 用户管理
 import user from '../components/user/user.vue'
 import myInfo from '../components/user/myInfo.vue'
+import teachermsg from '../components/user/teachermsg.vue'
 // 课程
 import course from '../components/course/course.vue'
 import teacher from '../components/course/teacher.vue'
@@ -73,6 +75,10 @@ const routes = [
       {
         path: '/courseList',
         component: teacher
+      },
+      {
+        path: '/teacherInfo',
+        component: teachermsg
       },
       {
         path: '/myTeather',

@@ -54,6 +54,7 @@ export default {
   li {
     margin-top: 20px;
     width: 300px;
+    padding-bottom: 5px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

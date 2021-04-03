@@ -35,7 +35,7 @@ export default {
 }
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .nav li {
   padding: 10px 0 5px;
   color: #666;
