@@ -4,6 +4,7 @@ import {
   Form,
   FormItem,
   Input,
+  InputNumber,
   Message,
   Container,
   Header,
@@ -53,6 +54,7 @@ Vue.use(Timeline)
 Vue.use(TimelineItem)
 Vue.use(divider)
 Vue.use(Avatar)
+Vue.use(InputNumber)
 Vue.use(DatePicker)
 Vue.use(Radio)
 Vue.use(RadioGroup)

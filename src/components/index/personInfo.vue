@@ -3,55 +3,88 @@
     <div class="zz_header">
       <div class="zz_slide"></div>
       <div class="zz_title">基本信息</div>
-      <div class="zz_more">
+      <div class="zz_more" @click="EditDialog">
         <i class="el-icon-male el-icon-edit"></i>
       </div>
     </div>
     <div class="info">
       <div class="header_img">
-        <img src="../../assets/img/shouye/user.png" alt="" />
+        <img v-if="userList.u_imgurl" :src="uploadeImg + userList.u_imgurl" alt="" />
+        <img v-else src="../../assets/img/shouye/user.png" alt="" />
       </div>
       <div class="header_info">
         <p class="username">
-          {{ userInfo.username }}
-          <i class="el-icon-female female" v-if="userInfo.sex == 1"></i>
+          {{ userList.u_name }}
+          <i class="el-icon-female female" v-if="userList.u_sex == 1"></i>
           <i class="el-icon-male male" v-else></i>
         </p>
-        <p>手机号：{{ userInfo.tel }}</p>
-        <p>角色：{{ userInfo.role }}</p>
+        <p>手机号：{{ userList.u_tel }}</p>
+        <p>角色：{{ userList.role }}</p>
       </div>
     </div>
+    <!-- 添加、编辑用户的弹框 -->
+    <myInfoModel ref="editUser" @ok="modalFormOk" />
   </div>
 </template>
 
 <script>
+import myInfoModel from '../user/myInfoModel'
+
 export default {
+  components: {
+    myInfoModel
+  },
   data() {
     return {
-      userInfo: {}
+      userList: {},
+      userInfo: {},
+      queryInfo: {
+        query: window.sessionStorage.getItem('userId')
+      },
+
+      uploadeImg: window._CONFIG.uploade
     }
   },
-  mounted() {
-    let role = ''
-    const sessionRole = window.sessionStorage.getItem('role')
+  created() {
+    this.getUserList()
+  },
+  methods: {
+    async getUserList() {
+      const { data: res } = await this.$http.get('users/oneUsers', { params: this.queryInfo })
+      if (res.code !== '200') {
+        return this.$message.error('数据获取失败!')
+      } else {
+        this.userList = res.data.users
+        if (this.userList.u_role === 1) {
+          this.userList.role = 'VIP用户'
+        }
+        if (this.userList.u_role === 2) {
+          this.userList.role = '教练'
+        }
+        if (this.userList.u_role === 3) {
+          this.userList.role = '管理员'
+        }
 
-    if (sessionRole === '1') {
-      role = 'vip用户'
-    }
-    if (sessionRole === '2') {
-      role = '教练'
-    }
-    if (sessionRole === '3') {
-      role = '管理员'
-    }
-    this.$nextTick(() => {
-      this.userInfo = {
-        username: window.sessionStorage.getItem('username'),
-        tel: window.sessionStorage.getItem('tel'),
-        role: role,
-        sex: window.sessionStorage.getItem('sex')
+        console.log('本用户的信息lalallal', this.userList)
       }
-    })
+    },
+    EditDialog() {
+      this.$refs.editUser.title = '编辑用户信息'
+      const data = {
+        userId: this.userList.u_id,
+        username: this.userList.u_name,
+        pwd: this.userList.u_pwd,
+        role: this.userList.u_role,
+        tel: this.userList.u_tel,
+        sex: this.userList.u_sex,
+        u_imgname: this.userList.u_imgname,
+        u_imgurl: this.uploadeImg + this.userList.u_imgurl
+      }
+      this.$refs.editUser.edit(data)
+    },
+    modalFormOk() {
+      this.getUserList()
+    }
   }
 }
 </script>
@@ -79,6 +112,7 @@ export default {
   right: 0px;
   font-size: 16px;
   color: #666;
+  cursor: pointer;
   &:hover {
     color: #3498db;
   }
@@ -107,7 +141,7 @@ export default {
   .username {
     margin-top: 30px;
     margin-bottom: 20px;
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 700;
     color: #333333;
   }
@@ -117,6 +151,7 @@ export default {
   color: #3498db;
 }
 .female {
+  color: #FF69B4;
   font-weight: 700;
 }
 </style>

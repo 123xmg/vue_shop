@@ -15,7 +15,7 @@
           <div class="profile-image">
             <!-- <img src="../../assets/teacher/3.jpg" alt="" /> -->
             <img v-if="teaInfo.s_imgurl" :src="uploadeImg + teaInfo.s_imgurl" alt="" />
-          <img v-else src="../../assets/teacher/3.jpg" alt="" />
+            <img v-else src="../../assets/teacher/3.jpg" alt="" />
             <div class="profile-info">
               <h4 class="name">姓名：{{ teaInfo.u_name }}</h4>
               <p class="position">

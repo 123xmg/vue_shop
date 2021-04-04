@@ -13,7 +13,8 @@
         <div class="team-member" v-for="(item, i) in itemOnce" :key="i">
           <!-- 蒙板 -->
           <div class="profile-image">
-            <img src="../../assets/teacher/3.jpg" alt="" />
+            <img v-if="item.s_imgurl" :src="uploadeImg + item.s_imgurl" alt="" />
+            <img v-else src="../../assets/teacher/3.jpg" alt="" />
             <div class="profile-info">
               <h4 class="name">姓名：{{ item.u_name }}</h4>
               <p class="position">
@@ -26,23 +27,31 @@
                 }}
               </p>
 
-              <p class="position">价格：{{ item.s_price }}/节</p>
-              <div class="profile-edit">查看详情</div>
+              <p class="position">价格：{{ item.s_price && item.s_price.toFixed(2) }}/节</p>
+              <div class="profile-edit" @click="lookView">详情</div>
             </div>
-            <el-button style="width: 100%; margin-top: 8px" size="small">立即购买</el-button>
+            <el-button style="width: 100%; margin-top: 8px" size="small" @click="costView(item)"
+              >立即购买</el-button
+            >
           </div>
         </div>
       </div>
     </section>
+    <cost ref="modelFormRef" @ok="modalFormOk" />
   </div>
 </template>
 
 <script>
+import cost from './cost'
 export default {
+  components: {
+    cost
+  },
   data() {
     return {
       list: [],
-      page: 1
+      page: 1,
+      uploadeImg: window._CONFIG.uploade
     }
   },
   created() {
@@ -54,6 +63,7 @@ export default {
       if (res.code !== '200') {
         return this.$message.error('数据获取失败!')
       } else {
+        console.log(res.data.list)
         this.getPage(res.data.list)
       }
     },
@@ -66,8 +76,14 @@ export default {
         row.push(list.slice(i, i + 4))
       }
       this.list = row
-      console.log('所有用户的信息')
-      console.log(this.list)
+    },
+    lookView() {},
+    costView(item) {
+      this.$refs.modelFormRef.title = '购买课程'
+      this.$refs.modelFormRef.edit(item)
+    },
+    modalFormOk() {
+      this.getList()
     }
   }
 }
