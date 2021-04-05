@@ -70,14 +70,8 @@ export default {
         // 编辑用户
         console.log('编辑用户提交的数据', formData)
         const { data: res } = await this.$http.post('alipay/pay', formData)
-        if (res.code !== '200') {
-          this.$message.error('修改失败')
-          this.close()
-        } else {
-          this.$message.success('修改成功')
-          this.editVisible = false
-          this.$emit('ok')
-        }
+        console.log(res.url)
+        window.open(res.url)
       })
     },
     close() {

@@ -28,7 +28,7 @@
               </p>
 
               <p class="position">价格：{{ item.s_price && item.s_price.toFixed(2) }}/节</p>
-              <div class="profile-edit" @click="lookView">详情</div>
+              <div class="profile-edit" @click="lookView(item)">详情</div>
             </div>
             <el-button style="width: 100%; margin-top: 8px" size="small" @click="costView(item)"
               >立即购买</el-button
@@ -38,13 +38,16 @@
       </div>
     </section>
     <cost ref="modelFormRef" @ok="modalFormOk" />
+    <detail ref="detailFormRef" @ok="modalFormOk" />
   </div>
 </template>
 
 <script>
 import cost from './cost'
+import detail from './detail'
 export default {
   components: {
+    detail,
     cost
   },
   data() {
@@ -77,7 +80,11 @@ export default {
       }
       this.list = row
     },
-    lookView() {},
+    lookView(item) {
+      this.$refs.detailFormRef.title = '私教详情'
+      this.$refs.detailFormRef.edit(item.s_content)
+    },
+
     costView(item) {
       this.$refs.modelFormRef.title = '购买课程'
       this.$refs.modelFormRef.edit(item)
